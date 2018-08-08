@@ -1,312 +1,230 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <title>Визуализатор математических графиков</title>
-  <meta charset="utf8"/>
-  <link rel="shortcut icon" href="images/lable.jpg" type="image/x-jpg">
-    <style>
-        html {
-            background: url(images/1.jpg);
-        }
-        .polygon-top {
-            margin: 0;
-            padding: 20px 0;
-            color: #00539F;
-            text-align: left;
-            font-family: 'Pacifico', cursive;
-            font-size: larger;
-        }
-        body {
-            width: 1000px;
-            margin: 0 auto;
-            background-color: #98d8fe;
-            padding: 0 20px 20px 20px;
-            border: 5px #fff;
-        }
-        h2, h3 {
-            margin: 0;
-            color: #9f3b96;
-            font-family: 'Pacifico', cursive;
-        }
-        a {text-decoration: none;}
-        a:link{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #2408fc;
-        }
-        a:visited{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #2408fc;
-        }
-        a:hover{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #ff86fa;
-            text-decoration: underline;
-        }
-        a:active{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #ff86fa;
-        }
-        .subabout {
-            margin: 0;
-            color: #040404;
-            background-color: #fcfbfd;
-            font-family: 'Pacifico', cursive;
-            border: 2px solid #040404;
-            padding: 10px 20px 10px 20px;
-            text-align: left;
-        }
-        th {
-            width: 450px;
-            font-family: "Times New Roman";
-            font-size: 14px;
-            text-align: center;
-            background-color: white;
-            color: #040404;
-            padding: 10px 10px;
-            border: 1px solid #040404;
-        }
-        .abscissa, .ordinate {
-            font-family: 'Pacifico', cursive;
-            margin: 0;
-            background-color: #9cfdee;
-            border: 1px solid rgba(36, 8, 252, 1);
-            padding: 10px 20px 10px 20px;
-            text-align: left;
-            font-size: 14px;
-            border-collapse: collapse;
-            border-radius: 20px;
-            box-shadow: 0 0 0 5px #4a79f2;
-            color: #040404;
-        }
-        #usually, #fmp, #polar, #implicity, #parametr {
-            font-family: 'Pacifico', cursive;
-            margin: 0;
-            background-color: #9cfdee;
-            border: 1px solid rgba(36, 8, 252, 1);
-            padding: 10px 20px 10px 20px;
-            text-align: left;
-            font-size: 14px;
-            border-collapse: collapse;
-            border-radius: 20px;
-            box-shadow: 0 0 0 5px #4a79f2;
-            color: #040404;
-            display: none;
-        }
-        #usually:target{display: block;}
-        #fmp:target{display: block;}
-        #polar:target{display: block;}
-        #implicity:target{display: block;}
-        #parametr:target{display: block;}
+
+  <head>
+    <title>Построение математических графиков онлайн</title>
+    <meta charset="utf8" />
+    <link rel="shortcut icon" href="images/graph.png" type="image/x-icon">
+    <style type="text/css">
+      html {
+        background: url(images/bgr.jpg);
+        background-attachment: fixed;
+      }
+      
+      .polygon {
+        margin: 18px 6px 6px 6px;
+        background-color: #e0e7ff;
+        padding: 18px;
+        font-family: Roboto Slab;
+      }
+      
+      #heading {
+        margin: 6px;
+        text-align: left;
+        font-family: 'Lato';
+        font-size: 36px;
+      }
+      
+      .interval {
+        font-family: Roboto Slab;
+        margin: 6px 0 0 0;
+      }
+      
+      #function {
+        margin: 6px 0 0 0;
+        height: 50px;
+        width: 100%;
+        font-size: 32px;
+        font-family: Roboto Slab Light;
+      }
+      
+      #build_but {
+        margin: 18px 0 0 0;
+        background: white;
+        box-shadow: inset -6px 0 0 0 black;
+        text-decoration: none;
+        font-family: Roboto Slab;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        margin: 9px 0 0 0;
+        padding: 6px 12px 6px 6px;
+      }
+      
+      #build_but:hover {
+        box-shadow: inset -6px 0 0 2px black, inset 2px 0 0 0 black;
+      }
+      
+      #build_but:active {
+        background: #dddddd;
+        box-shadow: inset -6px 0 0 3px black, inset 3px 0 0 0 black;
+      }
+      
+      TABLE {
+        border: 2px solid black;
+      }
+      
+      TH {
+        border: 2px solid black;
+        padding: 3px;
+      }
+      
+      DETAILS {
+        margin: 6px 0 0 0;
+      }
+      
+      #graphic {
+        background: white;
+        height: 100%;
+        width: 100%;
+      }
+      
+      FOOTER {
+        margin: 6px;
+      }
+      
+      body {
+        width: 1000px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 18px;
+        border: 5px #fff;
+      }
     </style>
- </head>
- <body>
-  <p>
-    Содержимое этого файла HTML будет отображаться на&nbsp;странице
-    <a href="https://bmstu-iu9.github.io/utp2018-3-graphics">
-      https://bmstu-iu9.github.io/utp2018-3-graphics
-    </a>
-  </p>
-  <div class = '' id = 'polygon'>
-    <div class = 'polygon-top'>
-        <h1>
-            <img src="images/lable.jpg" alt="Our label">
-            Визуализатор математических графиков
-        </h1>
+  </head>
 
-    </div>
-</div>
+  <body>
+    <h1 id='heading'>
+        Построение математических графиков
+    </h1>
 
-<div id="about_site">
-    <h2>
-        Как построить график?
-    </h2>
-    <div class="subabout">
-        <p>
-            Для построения графика сначала необходимо выбрать тип функции.
-            Затем указать диапазон отображаемых значений по осям и параметры кривой.
-            Также можно добавить еще одну функцию для построения ее графика.
-            Далее необходимо нажать кнопку
-            <img src="images/build.jpg" alt="buld">
-        </p>
+    <div class='polygon'>
+      <h2 style="margin: 0;">Введите функцию</h2>
+      <input type="text" placeholder="ваша функция" id="function" tabindex="1" autofocus/>
     </div>
-</div>
-
-<div class="functions">
-    <h2>Выберете тип функции</h2>
-    <div id="links">
-        <a href="#usually">Функция одного переменного </a><br>
-        <a href="#fmp">Функция многих переменных </a><br>
-        <a href="#polar">Функция в полярных координатах </a><br>
-        <a href="#implicity">Функция в неявном виде </a><br>
-        <a href="#parametr">Функция в параметрическом виде </a><br><br>
-    </div>
-    <div class="function-boxes">
-        <div id="usually">
-            <h3>Функция одного переменного </h3><br>
-            <label> f(x) = </label>
-            <input type="text" name="usually-fun"
-                   class="usually-graph-input" placeholder="Например: x^3 + 5x -6"/><br>
-            <p><input type="submit" value="Построить"></p>
-        </div>
-        <div id="fmp">
-            <h3>Функция многих переменных </h3><br>
-            <label> f(x) = </label>
-            <input type="text" name="fmp-fun"
-                   class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
-            <p><input type="submit" value="Построить"></p>
-        </div>
-        <div id="polar">
-            <h3>Функция в полярных координатах </h3><br>
-            <label> r(a) = </label>
-            <input type="text" neme="polar-fun"
-                   class="polar-graph-input" placeholder="Например: sin(6t)"/>
-            <label>,где а в градусах от </label>
-            <input type="text" name="from-degree"
-                   class="low-degree" placeholder="0"/>°
-            <label> до </label>
-            <input type="text" name="to-degree"
-                   class="high-degree" placeholder="360"/>°<br>
-            <p><input type="submit" value="Построить"></p>
-        </div>
-        <div id="implicity">
-            <h3>Функция в неявном виде </h3><br>
-            <input type="text" name="implicity-fun"
-                   class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br>
-            <p><input type="submit" value="Построить"></p>
-        </div>
-        <div id="parametr">
-            <h3>Функция в параметрическом виде </h3><br>
-            <label> x(t) = </label>
-            <input type="text" name="parametr-fun-x"
-                   class="parametr-graph-input" placeholder="Например: t - 2sin(t)"/><br><br>
-            <lable> y(t) = </lable>
-            <input type="text" name="parametr-fun-y"
-                   class="parametr-graph-input" placeholder="Например: 5 - 5cos(t)"/>
-            <label>,где t от </label>
-            <input type="text" name="from-parametr"
-                   class="low-parametr" placeholder="-5"/>
-            <label> до </label>
-            <input type="text" name="to-parametr"
-                   class="high-parametr" placeholder="5"/><br>
-            <br>
-            <p><input type="submit" value="Построить"></p>
-        </div>
-    </div>
-</div>
-
-<h2>Задайте диапазон значений по осям</h2><br>
-<div class="coordinates-range">
-    <div class='abscissa' id="abscissa">
-        <h3>Ось Ox: </h3>
+    <div class='polygon'>
+      <h2 style="margin: 0;">Задайте интервалы построения</h2>
+      <fieldset class="interval">
+        <legend>Ось Ox</legend>
         <label>интервал: от </label>
-        <input type="text" name="from-abscissa"
-               class="low-abscissa" placeholder="-10"/>
+        <input type="number" name="from-abscissa" class="low-abscissa" placeholder="-10" tabindex="2" />
         <label> до </label>
-        <input type="text" name="to-abscissa"
-               class="high-abscissa" placeholder="10"/>
-    </div><br>
-    <div class="ordinate" id="ordinate">
-        <h3>Ось Oy: </h3>
+        <input type="number" name="to-abscissa" class="high-abscissa" placeholder="10" tabindex="3" />
+      </fieldset>
+      <fieldset class="interval">
+        <legend>Ось Oy</legend>
         <label>интервал: от </label>
-        <input type="text" name="from-ordinate"
-               class="low-ordinate" placeholder="-10"/>
+        <input type="number" name="from-ordinate" class="low-ordinate" placeholder="-10" tabindex="4" />
         <label> до </label>
-        <input type="text" name="to-ordinate"
-               class="high-ordinate" placeholder="10"/>
+        <input type="number" name="to-ordinate" class="high-ordinate" placeholder="10" tabindex="5" />
         <label for="RangeAvto">
-            <input type="checkbox" checked="checked" id="RangeAvto" name="RangeAvto"/>
-            авто
+          <input type="checkbox" checked="checked" id="RangeAvto" name="RangeAvto" /> авто
         </label>
-    </div>
-</div>
-<p><input type="submit" value="Построить"></p>
-
-<div id="prompt">
-    <h2>
-        Таблица обозначений
-    </h2>
-    <table>
-        <tr>
+      </fieldset>
+      <button id="build_but">построить</button>
+      <details>
+        <summary>Инструкция</summary>
+        <p>Для построения графика необходимо:
+          <ol>
+            <li>Ввести функцию в соответствующее поле с использованием обозначений, приведенных в таблице ниже.</li>
+            <li>Задать интервалы на осях Ox и Oy, в которых будет построена функция.</li>
+            <li>Нажать кнопку "Построить".</li>
+          </ol>
+        </p>
+        <h2>
+				Таблица обозначений
+			</h2>
+        <table>
+          <tr>
             <th>Число пи (3,14...)</th>
             <th>pi</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Экспонента (2,71...)</th>
             <th>e</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Умножение</th>
             <th>*</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Деление</th>
             <th>/</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Возведение в степень</th>
             <th>^</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Извлечение корня</th>
             <th>sqrt</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Модуль</th>
             <th>abc</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Логарифм по основанию 2</th>
             <th>log2(x)</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Логарифм по основанию 10 от x</th>
             <th>lg(x) или log10(x)</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Натуральный логарифм</th>
             <th>ln(x)</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Логарифм по основанию b</th>
             <th>log(x;b)</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Синус в градусах</th>
             <th>sin</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Косинус в градусах</th>
             <th>cos</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Тангенс в градусах</th>
             <th>tg</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Котангенс в градусах</th>
             <th>ctg</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Арксинус</th>
             <th>asin</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Арккосинус</th>
             <th>acos</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Арктангенс</th>
             <th>atg</th>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <th>Арккотангенс</th>
             <th>actg</th>
-        </tr>
-    </table>
-</div>
- </body>
+          </tr>
+        </table>
+      </details>
+    </div>
+    <div class="polygon">
+      <h2>График</h2>
+      <canvas id="graphic"></canvas>
+    </div>
+    <footer>
+      <p> &#169; <a href="https://github.com/alevko55555" target="_blank">@alevko55555</a>
+        <a href="https://github.com/Nikulik" target="_blank">@Nikulik</a>
+        <a href="https://github.com/AnnSvechnikova" target="_blank">@AnnSvechnikova</a>
+        <a href="https://github.com/genchildren" target="_blank">@genchildren</a>
+        <a href="https://github.com/lameach" target="_blank">@Lameach</a>, 2018</p>
+    </footer>
+  </body>
+
 </html>
