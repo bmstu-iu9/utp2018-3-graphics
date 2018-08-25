@@ -103,16 +103,6 @@
         #parametr:target{display: block;}
     </style>
  </head>
- <body>
-  <p>
-    Содержимое этого файла HTML будет отображаться на&nbsp;странице
-    <a href="https://bmstu-iu9.github.io/utp2018-3-graphics">
-      https://bmstu-iu9.github.io/utp2018-3-graphics
-    </a>
-  </p>
-  <div class = '' id = 'polygon'>
-
-<body >
 
 <div class = '' id = 'polygon'>
     <div class = 'polygon-top'>
@@ -153,7 +143,7 @@
             <h3>Функция одного переменного </h3><br>
             <label> f(x) = </label>
             <input type="text" name="usually-fun"
-                   class="usually-graph-input" placeholder="Например: x^3 + 5x -6"/><br>
+                   class="usually-graph-input" id="oneVarIn" placeholder="Например: x^3 + 5x -6"/><br>
             <p><button id = 'DrawUsuallyGraph' onclick='drawUsuallyGraph()'>Построить</button></p>
             <canvas id="canvas2dUsually" ></canvas>
         </div>
@@ -212,19 +202,19 @@
     <div class='abscissa' id="abscissa">
         <h3>Ось Ox: </h3>
         <label>интервал: от </label>
-        <input type="text" name="from-abscissa"
+        <input type="text" name="from-abscissa" id="leftIntervalBorder"
                class="low-abscissa" placeholder="-10"/>
         <label> до </label>
-        <input type="text" name="to-abscissa"
+        <input type="text" name="to-abscissa" id="rightIntervalBorder"
                class="high-abscissa" placeholder="10"/>
     </div><br>
     <div class="ordinate" id="ordinate">
         <h3>Ось Oy: </h3>
         <label>интервал: от </label>
-        <input type="text" name="from-ordinate"
+        <input type="text" name="from-ordinate" id="bottomBorder"
                class="low-ordinate" placeholder="-10"/>
         <label> до </label>
-        <input type="text" name="to-ordinate"
+        <input type="text" name="to-ordinate" id="upBorder"
                class="high-ordinate" placeholder="10"/>
         <label for="RangeAvto">
             <input type="checkbox" checked="checked" id="RangeAvto" name="RangeAvto"/>
@@ -317,28 +307,30 @@
     </table>
 </div>
 
+<script src="./algorithms/oneVarFuncPlot.js" type="text/javascript"></script>
+
 <script>
+
     function drawUsuallyGraph() {
     var canvas = document.getElementById('canvas2dUsually');
     var context = canvas.getContext('2d');
 
     canvas.width = 650;
     canvas.height = 650;
+    const funcInput = document.getElementById('oneVarIn').value;
 
-    context.fillStyle = "#ffffff";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    const a = document.getElementById('leftIntervalBorder').value;
+    const b = document.getElementById('rightIntervalBorder').value;
+    const c = document.getElementById('bottomBorder').value;
+    const d = document.getElementById('upBorder').value;
+    const auto = document.getElementById('RangeAvto');
+    console.log(auto.checked);
+    if (auto.checked == true) {
+      buildAll(funcInput, eval(a), eval(b));
+    } else {
+      buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
+    }
 
-    context.beginPath();
-    context.moveTo(0, canvas.height/2);
-    context.lineTo(canvas.width, canvas.height/2);
-    context.strokeStyle = '#000000';
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(canvas.width/2, 0);
-    context.lineTo(canvas.width/2, canvas.height);
-    context.strokeStyle = '#000000';
-    context.stroke();
     }
 
     function drawFmpGraph() {
