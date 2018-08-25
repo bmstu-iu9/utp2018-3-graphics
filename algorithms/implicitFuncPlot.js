@@ -2,7 +2,7 @@
 
 let height = 0;
 
-function funcFromString(funcString) {
+function implicitFuncFromString(funcString) {
     funcString = funcString.replace(/\^/g, '**');
     let i = 0;
     while (funcString[i] !== '=') i++;
@@ -14,10 +14,10 @@ function funcFromString(funcString) {
 f = funcFromString("x^2 - y^2 = 1");
 
 function startImpl(funcIn, a1, a2, a3, a4) {
-    let f = funcFromString(funcIn);
+    let f = implicitFuncFromString(funcIn);
 
     arr = [];
-
+    n = 200;
     a = a1;
     b = a2;
     c = a3;
@@ -41,10 +41,10 @@ function startImpl(funcIn, a1, a2, a3, a4) {
         alert('Проверьте корректность введенных данных и попробуйте снова');
         return;
     }
-    plot(f);
+    implicitPlot(f);
 }
 
-n = 200; //number of pieces
+//n = 200; //number of pieces
 a = -8; //X borders
 b = 8;
 c = -8; //Y borders
@@ -241,7 +241,7 @@ class ImplicitMarchingSquare {
     }
 }
 
-function plot() {
+function implicitPlot() {
 
     const canvas = document.getElementById('canvas2dImplicity');
     const ctx = canvas.getContext('2d');
@@ -267,7 +267,7 @@ function plot() {
         ctx.closePath();
     }
 
-    markAxis();
+    markAxisImplicit();
 }
 
 function axisPlot() {
@@ -312,7 +312,7 @@ function mouseCoordinates(canvas, evnt) {
     };
 }
 
-function markAxis() {
+function markAxisImplicit() {
 
     const canvas = document.getElementById('canvas2dImplicity');
     const ctx = canvas.getContext('2d');
