@@ -44,7 +44,7 @@ function start(funcIn, a1, a2, a3, a4) {
     const dx = Math.min((b - a) / n, 1);
     const dy = Math.min((d - c) / n, 1);
 
-    xScale = 400 / abs(b-a);
+    xScale = 400 / abs(b - a);
     yScale = 400 / abs(d - c);
 
     arr = [];
@@ -63,7 +63,7 @@ function start(funcIn, a1, a2, a3, a4) {
     surfacePlot();
 }
 
-const n = 250; //number of pieces
+let n = 250; //number of pieces
 //let a = -10, b = 10;
 //let c = -10, d = 10;
 
@@ -338,7 +338,7 @@ function mouseCoordinates(canvas, evnt) {
     };
 }
 
-function axisPlot(backSide = false) {
+function axis3DPlot(backSide = false) {
 
     const canvas = document.getElementById('canvas2dFmp');
     const ctx = canvas.getContext('2d');
@@ -501,7 +501,7 @@ function surfacePlot() {
 
     const heightToColor = getColorizer(min, max);
 
-    axisPlot(true);
+    axis3DPlot(true);
 
     if (gamma >= 0 && gamma < pi) {
         for (let x = 0; x < arr.length - 1; x++) {
@@ -543,7 +543,7 @@ function surfacePlot() {
         }
     }
 
-    axisPlot();
+    axis3DPlot();
 
 }
 

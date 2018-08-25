@@ -80,7 +80,7 @@ function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBord
 let a = -10, b = 10;
 let c = -10, d = 10;
 let max = -Infinity, min = Infinity;
-const offset = 50;
+let offset = 50;
 const canvSize = 650;
 
 const colors = ['blue', 'red', 'green', 'orange', 'black'];
