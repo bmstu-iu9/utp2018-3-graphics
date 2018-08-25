@@ -103,16 +103,6 @@
         #parametr:target{display: block;}
     </style>
  </head>
- <body>
-  <p>
-    Содержимое этого файла HTML будет отображаться на&nbsp;странице
-    <a href="https://bmstu-iu9.github.io/utp2018-3-graphics">
-      https://bmstu-iu9.github.io/utp2018-3-graphics
-    </a>
-  </p>
-  <div class = '' id = 'polygon'>
-
-<body >
 
 <div class = '' id = 'polygon'>
     <div class = 'polygon-top'>
@@ -153,14 +143,14 @@
             <h3>Функция одного переменного </h3><br>
             <label> f(x) = </label>
             <input type="text" name="usually-fun"
-                   class="usually-graph-input" placeholder="Например: x^3 + 5x -6"/><br>
+                   class="usually-graph-input" id="oneVarIn" placeholder="Например: x^3 + 5x -6"/><br>
             <p><button id = 'DrawUsuallyGraph' onclick='drawUsuallyGraph()'>Построить</button></p>
             <canvas id="canvas2dUsually" ></canvas>
         </div>
         <div id="fmp">
             <h3>Функция многих переменных </h3><br>
             <label> f(x, y) = </label>
-            <input type="text" name="fmp-fun"
+            <input type="text" name="fmp-fun" id="twoVarIn"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
             <canvas id="canvas2dFmp" ></canvas>
@@ -181,7 +171,7 @@
         </div>
         <div id="implicity">
             <h3>Функция в неявном виде </h3><br>
-            <input type="text" name="implicity-fun"
+            <input type="text" name="implicity-fun" id="implicitIn"
                    class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br>
             <p><button id = 'DrawImplicityGraph' onclick='drawImplicityGraph()'>Построить</button></p>
             <canvas id="canvas2dImplicity" ></canvas>
@@ -212,19 +202,19 @@
     <div class='abscissa' id="abscissa">
         <h3>Ось Ox: </h3>
         <label>интервал: от </label>
-        <input type="text" name="from-abscissa"
+        <input type="text" name="from-abscissa" id="leftIntervalBorder"
                class="low-abscissa" placeholder="-10"/>
         <label> до </label>
-        <input type="text" name="to-abscissa"
+        <input type="text" name="to-abscissa" id="rightIntervalBorder"
                class="high-abscissa" placeholder="10"/>
     </div><br>
     <div class="ordinate" id="ordinate">
         <h3>Ось Oy: </h3>
         <label>интервал: от </label>
-        <input type="text" name="from-ordinate"
+        <input type="text" name="from-ordinate" id="bottomBorder"
                class="low-ordinate" placeholder="-10"/>
         <label> до </label>
-        <input type="text" name="to-ordinate"
+        <input type="text" name="to-ordinate" id="upBorder"
                class="high-ordinate" placeholder="10"/>
         <label for="RangeAvto">
             <input type="checkbox" checked="checked" id="RangeAvto" name="RangeAvto"/>
@@ -317,28 +307,31 @@
     </table>
 </div>
 
+<script src="./algorithms/oneVarFuncPlot.js" type="text/javascript"></script>
+<script src="./algorithms/twoVarFuncPlot.js" type="text/javascript"></script>
+<script src="./algorithms/implicitFuncPlot.js" type="text/javascript"></script>
+
 <script>
+
     function drawUsuallyGraph() {
     var canvas = document.getElementById('canvas2dUsually');
     var context = canvas.getContext('2d');
 
     canvas.width = 650;
     canvas.height = 650;
+    const funcInput = document.getElementById('oneVarIn').value;
 
-    context.fillStyle = "#ffffff";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    const a = document.getElementById('leftIntervalBorder').value;
+    const b = document.getElementById('rightIntervalBorder').value;
+    const c = document.getElementById('bottomBorder').value;
+    const d = document.getElementById('upBorder').value;
+    const auto = document.getElementById('RangeAvto');
+    if (auto.checked == true) {
+      buildAll(funcInput, eval(a), eval(b));
+    } else {
+      buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
+    }
 
-    context.beginPath();
-    context.moveTo(0, canvas.height/2);
-    context.lineTo(canvas.width, canvas.height/2);
-    context.strokeStyle = '#000000';
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(canvas.width/2, 0);
-    context.lineTo(canvas.width/2, canvas.height);
-    context.strokeStyle = '#000000';
-    context.stroke();
     }
 
     function drawFmpGraph() {
@@ -348,20 +341,13 @@
         canvas.width = 650;
         canvas.height = 650;
 
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        const funcInput = document.getElementById('twoVarIn').value;
 
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
-
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
+        const a = document.getElementById('leftIntervalBorder').value;
+        const b = document.getElementById('rightIntervalBorder').value;
+        const c = document.getElementById('bottomBorder').value;
+        const d = document.getElementById('upBorder').value;
+        start(funcInput, eval(a), eval(b), eval(c), eval(d));
     }
 
     function drawPolarGraph() {
@@ -394,20 +380,13 @@
         canvas.width = 650;
         canvas.height = 650;
 
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        const funcInput = document.getElementById('implicitIn').value;
 
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
-
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
+        const a = document.getElementById('leftIntervalBorder').value;
+        const b = document.getElementById('rightIntervalBorder').value;
+        const c = document.getElementById('bottomBorder').value;
+        const d = document.getElementById('upBorder').value;
+        startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
     }
 
     function drawParametrGraph() {
