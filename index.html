@@ -111,6 +111,10 @@
     </a>
   </p>
   <div class = '' id = 'polygon'>
+
+<body >
+
+<div class = '' id = 'polygon'>
     <div class = 'polygon-top'>
         <h1>
             <img src="images/lable.jpg" alt="Our label">
@@ -150,14 +154,16 @@
             <label> f(x) = </label>
             <input type="text" name="usually-fun"
                    class="usually-graph-input" placeholder="Например: x^3 + 5x -6"/><br>
-            <p><input type="submit" value="Построить"></p>
+            <p><button id = 'DrawUsuallyGraph' onclick='drawUsuallyGraph()'>Построить</button></p>
+            <canvas id="canvas2dUsually" ></canvas>
         </div>
         <div id="fmp">
             <h3>Функция многих переменных </h3><br>
-            <label> f(x) = </label>
+            <label> f(x, y) = </label>
             <input type="text" name="fmp-fun"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
-            <p><input type="submit" value="Построить"></p>
+            <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
+            <canvas id="canvas2dFmp" ></canvas>
         </div>
         <div id="polar">
             <h3>Функция в полярных координатах </h3><br>
@@ -170,13 +176,15 @@
             <label> до </label>
             <input type="text" name="to-degree"
                    class="high-degree" placeholder="360"/>°<br>
-            <p><input type="submit" value="Построить"></p>
+            <p><button id = 'DrawPolarGraph' onclick='drawPolarGraph()'>Построить</button></p>
+            <canvas id="canvas2dPolar" ></canvas>
         </div>
         <div id="implicity">
             <h3>Функция в неявном виде </h3><br>
             <input type="text" name="implicity-fun"
                    class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br>
-            <p><input type="submit" value="Построить"></p>
+            <p><button id = 'DrawImplicityGraph' onclick='drawImplicityGraph()'>Построить</button></p>
+            <canvas id="canvas2dImplicity" ></canvas>
         </div>
         <div id="parametr">
             <h3>Функция в параметрическом виде </h3><br>
@@ -193,7 +201,8 @@
             <input type="text" name="to-parametr"
                    class="high-parametr" placeholder="5"/><br>
             <br>
-            <p><input type="submit" value="Построить"></p>
+            <p><button id = 'DrawParametrGraph' onclick='drawParametrGraph()'>Построить</button></p>
+            <canvas id="canvas2dParametr" ></canvas>
         </div>
     </div>
 </div>
@@ -223,7 +232,6 @@
         </label>
     </div>
 </div>
-<p><input type="submit" value="Построить"></p>
 
 <div id="prompt">
     <h2>
@@ -308,5 +316,123 @@
         </tr>
     </table>
 </div>
- </body>
+
+<script>
+    function drawUsuallyGraph() {
+    var canvas = document.getElementById('canvas2dUsually');
+    var context = canvas.getContext('2d');
+
+    canvas.width = 650;
+    canvas.height = 650;
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.beginPath();
+    context.moveTo(0, canvas.height/2);
+    context.lineTo(canvas.width, canvas.height/2);
+    context.strokeStyle = '#000000';
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(canvas.width/2, 0);
+    context.lineTo(canvas.width/2, canvas.height);
+    context.strokeStyle = '#000000';
+    context.stroke();
+    }
+
+    function drawFmpGraph() {
+        var canvas = document.getElementById('canvas2dFmp');
+        var context = canvas.getContext('2d');
+
+        canvas.width = 650;
+        canvas.height = 650;
+
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
+    }
+
+    function drawPolarGraph() {
+        var canvas = document.getElementById('canvas2dPolar');
+        var context = canvas.getContext('2d');
+
+        canvas.width = 650;
+        canvas.height = 650;
+
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
+    }
+
+    function drawImplicityGraph() {
+        var canvas = document.getElementById('canvas2dImplicity');
+        var context = canvas.getContext('2d');
+
+        canvas.width = 650;
+        canvas.height = 650;
+
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
+    }
+
+    function drawParametrGraph() {
+        var canvas = document.getElementById('canvas2dParametr');
+        var context = canvas.getContext('2d');
+
+        canvas.width = 650;
+        canvas.height = 650;
+
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
+    }
+</script>
+
+</body>
 </html>
