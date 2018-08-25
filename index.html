@@ -150,7 +150,7 @@
         <div id="fmp">
             <h3>Функция многих переменных </h3><br>
             <label> f(x, y) = </label>
-            <input type="text" name="fmp-fun"
+            <input type="text" name="fmp-fun" id="twoVarIn"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
             <canvas id="canvas2dFmp" ></canvas>
@@ -308,6 +308,7 @@
 </div>
 
 <script src="./algorithms/oneVarFuncPlot.js" type="text/javascript"></script>
+<script src="./algorithms/twoVarFuncPlot.js" type="text/javascript"></script>
 
 <script>
 
@@ -324,7 +325,6 @@
     const c = document.getElementById('bottomBorder').value;
     const d = document.getElementById('upBorder').value;
     const auto = document.getElementById('RangeAvto');
-    console.log(auto.checked);
     if (auto.checked == true) {
       buildAll(funcInput, eval(a), eval(b));
     } else {
@@ -340,20 +340,14 @@
         canvas.width = 650;
         canvas.height = 650;
 
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        const funcInput = document.getElementById('twoVarIn').value;
 
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
-
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
+        const a = document.getElementById('leftIntervalBorder').value;
+        const b = document.getElementById('rightIntervalBorder').value;
+        const c = document.getElementById('bottomBorder').value;
+        const d = document.getElementById('upBorder').value;
+        //const auto = document.getElementById('RangeAvto');
+        start(funcInput, eval(a), eval(b), eval(c), eval(d));
     }
 
     function drawPolarGraph() {
