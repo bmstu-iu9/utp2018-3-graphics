@@ -1,108 +1,18 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <title>Визуализатор математических графиков</title>
-  <meta charset="utf8"/>
-  <link rel="shortcut icon" href="images/lable.jpg" type="image/x-jpg">
+<head>
+    <meta charset="UTF-8">
+    <title>Визуализатор математических графиков</title>
+    <link rel="shortcut icon" href="images/lable.jpg" type="image/x-jpg">
+    <link rel="stylesheet" type="text/css" href="styles/shell.css">
     <style>
         html {
-            background: url(images/1.jpg);
+            background: url(images/2.jpg);
         }
-        .polygon-top {
-            margin: 0;
-            padding: 20px 0;
-            color: #00539F;
-            text-align: left;
-            font-family: 'Pacifico', cursive;
-            font-size: larger;
-        }
-        body {
-            width: 1000px;
-            margin: 0 auto;
-            background-color: #98d8fe;
-            padding: 0 20px 20px 20px;
-            border: 5px #fff;
-        }
-        h2, h3 {
-            margin: 0;
-            color: #9f3b96;
-            font-family: 'Pacifico', cursive;
-        }
-        a {text-decoration: none;}
-        a:link{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #2408fc;
-        }
-        a:visited{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #2408fc;
-        }
-        a:hover{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #ff86fa;
-            text-decoration: underline;
-        }
-        a:active{
-            font-family: 'Pacifico', cursive;
-            font-size: medium;
-            color: #ff86fa;
-        }
-        .subabout {
-            margin: 0;
-            color: #040404;
-            background-color: #fcfbfd;
-            font-family: 'Pacifico', cursive;
-            border: 2px solid #040404;
-            padding: 10px 20px 10px 20px;
-            text-align: left;
-        }
-        th {
-            width: 450px;
-            font-family: "Times New Roman";
-            font-size: 14px;
-            text-align: center;
-            background-color: white;
-            color: #040404;
-            padding: 10px 10px;
-            border: 1px solid #040404;
-        }
-        .abscissa, .ordinate {
-            font-family: 'Pacifico', cursive;
-            margin: 0;
-            background-color: #9cfdee;
-            border: 1px solid rgba(36, 8, 252, 1);
-            padding: 10px 20px 10px 20px;
-            text-align: left;
-            font-size: 14px;
-            border-collapse: collapse;
-            border-radius: 20px;
-            box-shadow: 0 0 0 5px #4a79f2;
-            color: #040404;
-        }
-        #usually, #fmp, #polar, #implicity, #parametr {
-            font-family: 'Pacifico', cursive;
-            margin: 0;
-            background-color: #9cfdee;
-            border: 1px solid rgba(36, 8, 252, 1);
-            padding: 10px 20px 10px 20px;
-            text-align: left;
-            font-size: 14px;
-            border-collapse: collapse;
-            border-radius: 20px;
-            box-shadow: 0 0 0 5px #4a79f2;
-            color: #040404;
-            display: none;
-        }
-        #usually:target{display: block;}
-        #fmp:target{display: block;}
-        #polar:target{display: block;}
-        #implicity:target{display: block;}
-        #parametr:target{display: block;}
     </style>
- </head>
+</head>
+
+<body >
 
 <div class = '' id = 'polygon'>
     <div class = 'polygon-top'>
@@ -120,20 +30,23 @@
     </h2>
     <div class="subabout">
         <p>
-         Для построения графика функции сначала необходимо выбрать тип функции.
-         Появится окно с полем для ввода функции.
-         Затем введите саму функцию в это поле.
-         Если возникли затруднения с корректным вводом функции, то обратитесь к таблице
-         с обозначениями для записи функций, которая приведена ниже.
-         Далее укажите диапазон отображаемых значений по осям.
-         Затем необходимо нажать кнопку
-         <img src="images/build.jpg" alt="buld">
+            Для построения графика функции сначала необходимо выбрать тип функции.
+            Появится окно с полем для ввода функции.
+            Затем введите саму функцию в это поле.
+            Если возникли затруднения с корректным вводом функции, то обратитесь к таблице
+            с обозначениями для записи функций, которая приведена ниже.
+            Если вы выбрали функций с одной переменно, то можете указать до 5
+            различных таких функций в поле ввода через запятую " , " .
+            Далее укажите диапазон отображаемых значений по осям.
+            Затем необходимо нажать кнопку
+            <img src="images/build.jpg" alt="buld">
         </p>
     </div>
 </div>
 
 <div class="functions">
     <h2>Выберете тип функции</h2>
+    
     <div id="links">
         <a href="#usually">Функция одного переменного </a><br>
         <a href="#fmp">Функция многих переменных </a><br>
@@ -141,24 +54,100 @@
         <a href="#implicity">Функция в неявном виде </a><br>
         <a href="#parametr">Функция в параметрическом виде </a><br><br>
     </div>
+
     <div class="function-boxes">
         <div id="usually">
             <h3>Функция одного переменного </h3><br>
             <label> f(x) = </label>
+
             <input type="text" name="usually-fun"
                    class="usually-graph-input" id="oneVarIn" placeholder="Например: x^3 + 5x -6"/><br>
+
+            <h3>Задайте диапазон значений по осям</h3><br>
+
+            <div class="coordinates-range">
+                <div class='abscissa-usually' id="abscissa-usually">
+                    <h3>Ось Ox: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-abscissa"
+                           class="low-abscissa" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-abscissa"
+                           class="high-abscissa" placeholder="10"/>
+                </div><br>
+
+                <div class="ordinate-usually" id="ordinate-usually">
+                    <h3>Ось Oy: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-ordinate"
+                           class="low-ordinate" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-ordinate"
+                           class="high-ordinate" placeholder="10"/>
+                    <label for="RangeAvtoa">
+                        <input type="checkbox" checked="checked" id="RangeAvtoa" name="RangeAvto"/>
+                        авто
+                    </label>
+                </div>
+
+            </div>
+
             <p><button id = 'DrawUsuallyGraph' onclick='drawUsuallyGraph()'>Построить</button></p>
             <canvas id="canvas2dUsually" ></canvas>
         </div>
+
         <div id="fmp">
+
             <h3>Функция многих переменных </h3><br>
             <label> f(x, y) = </label>
             <input type="text" name="fmp-fun" id="twoVarIn"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
+
+            <h3>Задайте диапазон значений по осям</h3><br>
+
+            <div class="coordinates-range">
+
+                <div class='abscissa-fmp' id="abscissa-fmp">
+                    <h3>Ось Ox: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-abscissa"
+                           class="low-abscissa" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-abscissa"
+                           class="high-abscissa" placeholder="10"/>
+                </div><br>
+
+                <div class="ordinate-fmp" id="ordinate-fmp">
+                    <h3>Ось Oy: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-ordinate"
+                           class="low-ordinate" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-ordinate"
+                           class="high-ordinate" placeholder="10"/>
+                </div><br>
+
+                <div class="applicate-fmp" id="applicate-fmp">
+                    <h3>Ось Oz: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-applicate"
+                           class="low-applicate" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-applicate"
+                           class="high-applicate" placeholder="10"/>
+                    <label for="RangeAvtob">
+                        <input type="checkbox" checked="checked" id="RangeAvtob" name="RangeAvto"/>
+                        авто
+                    </label>
+                </div>
+
+            </div>
+
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
             <canvas id="canvas2dFmp" ></canvas>
         </div>
         <div id="polar">
+
             <h3>Функция в полярных координатах </h3><br>
             <label> r(a) = </label>
             <input type="text" neme="polar-fun" id="polarIn"
@@ -169,16 +158,56 @@
             <label> до </label>
             <input type="text" name="to-degree" id="polarUpperBound"
                    class="high-degree" placeholder="360"/>°<br>
+
             <p><button id = 'DrawPolarGraph' onclick='drawPolarGraph()'>Построить</button></p>
             <canvas id="canvas2dPolar" ></canvas>
         </div>
+
         <div id="implicity">
             <h3>Функция в неявном виде </h3><br>
+
             <input type="text" name="implicity-fun" id="implicitIn"
                    class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br>
+
+            <h3>Задайте диапазон значений по осям</h3><br>
+
+            <div class="coordinates-range">
+
+                <div class='abscissa-implicity' id="abscissa-implicity">
+                    <h3>Ось Ox: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-abscissa"
+                           class="low-abscissa" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-abscissa"
+                           class="high-abscissa" placeholder="10"/>
+                </div><br>
+
+                <div class="ordinate-implicity" id="ordinate-implicity">
+                    <h3>Ось Oy: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-ordinate"
+                           class="low-ordinate" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-ordinate"
+                           class="high-ordinate" placeholder="10"/>
+                </div><br>
+
+                <div class="applicate-implicity" id="applicate-implicity">
+                    <h3>Ось Oz: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-applicate"
+                           class="low-applicate" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-applicate"
+                           class="high-applicate" placeholder="10"/>
+                </div>
+            </div>
+
             <p><button id = 'DrawImplicityGraph' onclick='drawImplicityGraph()'>Построить</button></p>
             <canvas id="canvas2dImplicity" ></canvas>
         </div>
+
         <div id="parametr">
             <h3>Функция в параметрическом виде </h3><br>
             <label> x(t) = </label>
@@ -194,35 +223,40 @@
             <input type="text" name="to-parametr" id="parametricUpperBound"
                    class="high-parametr" placeholder="5"/><br>
             <br>
+
+            <h3>Задайте диапазон значений по осям</h3><br>
+
+            <div class="coordinates-range">
+
+                <div class='abscissa-parametr' id="abscissa-parametr">
+                    <h3>Ось Ox: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-abscissa"
+                           class="low-abscissa" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-abscissa"
+                           class="high-abscissa" placeholder="10"/>
+                </div><br>
+
+                <div class="ordinate-parametr" id="ordinate-parametr">
+                    <h3>Ось Oy: </h3>
+                    <label>интервал: от </label>
+                    <input type="text" name="from-ordinate"
+                           class="low-ordinate" placeholder="-10"/>
+                    <label> до </label>
+                    <input type="text" name="to-ordinate"
+                           class="high-ordinate" placeholder="10"/>
+                    <label for="RangeAvtoc">
+                        <input type="checkbox" checked="checked" id="RangeAvtoc" name="RangeAvto"/>
+                        авто
+                    </label>
+                </div>
+
+            </div>
+
             <p><button id = 'DrawParametrGraph' onclick='drawParametrGraph()'>Построить</button></p>
             <canvas id="canvas2dParametr" ></canvas>
         </div>
-    </div>
-</div>
-
-<h2>Задайте диапазон значений по осям</h2><br>
-<div class="coordinates-range">
-    <div class='abscissa' id="abscissa">
-        <h3>Ось Ox: </h3>
-        <label>интервал: от </label>
-        <input type="text" name="from-abscissa" id="leftIntervalBorder"
-               class="low-abscissa" placeholder="-10"/>
-        <label> до </label>
-        <input type="text" name="to-abscissa" id="rightIntervalBorder"
-               class="high-abscissa" placeholder="10"/>
-    </div><br>
-    <div class="ordinate" id="ordinate">
-        <h3>Ось Oy: </h3>
-        <label>интервал: от </label>
-        <input type="text" name="from-ordinate" id="bottomBorder"
-               class="low-ordinate" placeholder="-10"/>
-        <label> до </label>
-        <input type="text" name="to-ordinate" id="upBorder"
-               class="high-ordinate" placeholder="10"/>
-        <label for="RangeAvto">
-            <input type="checkbox" checked="checked" id="RangeAvto" name="RangeAvto"/>
-            авто
-        </label>
     </div>
 </div>
 
@@ -310,21 +344,20 @@
     </table>
 </div>
 
- <script src="./algorithms/oneVarFuncPlot.js" type="text/javascript"></script>
- <script src="./algorithms/twoVarFuncPlot.js" type="text/javascript"></script>
- <script src="./algorithms/implicitFuncPlot.js" type="text/javascript"></script>
- <script src="./algorithms/parametricPlot.js" type="text/javascript"></script>
+<script src="./algorithms/oneVarFuncPlot.js" type="text/javascript"></script>
+<script src="./algorithms/twoVarFuncPlot.js" type="text/javascript"></script>
+<script src="./algorithms/implicitFuncPlot.js" type="text/javascript"></script>
+<script src="./algorithms/parametricPlot.js" type="text/javascript"></script>
 
 <script>
-
     function drawUsuallyGraph() {
-    var canvas = document.getElementById('canvas2dUsually');
-    var context = canvas.getContext('2d');
+    let canvas = document.getElementById('canvas2dUsually');
+    let context = canvas.getContext('2d');
 
     canvas.width = 650;
     canvas.height = 650;
-    const funcInput = document.getElementById('oneVarIn').value;
 
+    const funcInput = document.getElementById('oneVarIn').value;
     const a = document.getElementById('leftIntervalBorder').value;
     const b = document.getElementById('rightIntervalBorder').value;
     const c = document.getElementById('bottomBorder').value;
@@ -336,8 +369,6 @@
       buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
     }
 
-    }
-
     function drawFmpGraph() {
         const canvas = document.getElementById('canvas2dFmp');
         const context = canvas.getContext('2d');
@@ -346,17 +377,32 @@
         canvas.height = 650;
 
         const funcInput = document.getElementById('twoVarIn').value;
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
 
         const a = document.getElementById('leftIntervalBorder').value;
         const b = document.getElementById('rightIntervalBorder').value;
         const c = document.getElementById('bottomBorder').value;
         const d = document.getElementById('upBorder').value;
         start(funcInput, eval(a), eval(b), eval(c), eval(d));
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
     }
 
     function drawPolarGraph() {
         const canvas = document.getElementById('canvas2dPolar');
         const context = canvas.getContext('2d');
+        let canvas = document.getElementById('canvas2dPolar');
+        let context = canvas.getContext('2d');
 
         canvas.width = 650;
         canvas.height = 650;
@@ -364,30 +410,61 @@
         const t0 = document.getElementById('polarLowerBound').value;
         const t1 = document.getElementById('polarUpperBound').value;
         const funcInput = document.getElementById('polarIn').value;
+     
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         startPolar(funcInput, eval(t0), eval(t1));
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
 
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
     }
 
     function drawImplicityGraph() {
         const canvas = document.getElementById('canvas2dImplicity');
         const context = canvas.getContext('2d');
+     
+        let canvas = document.getElementById('canvas2dImplicity');
+        let context = canvas.getContext('2d');
 
         canvas.width = 650;
         canvas.height = 650;
 
         const funcInput = document.getElementById('implicitIn').value;
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         const a = document.getElementById('leftIntervalBorder').value;
         const b = document.getElementById('rightIntervalBorder').value;
         const c = document.getElementById('bottomBorder').value;
         const d = document.getElementById('upBorder').value;
         startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
     }
 
     function drawParametrGraph() {
         const canvas = document.getElementById('canvas2dParametr');
         const context = canvas.getContext('2d');
+        let canvas = document.getElementById('canvas2dParametr');
+        let context = canvas.getContext('2d');
 
         canvas.width = 650;
         canvas.height = 650;
@@ -396,8 +473,22 @@
         const t1 = document.getElementById('parametricUpperBound').value;
         const funcInputX = document.getElementById('parametricInX').value;
         const funcInputY = document.getElementById('parametricInY').value;
+     
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.moveTo(0, canvas.height/2);
+        context.lineTo(canvas.width, canvas.height/2);
+        context.strokeStyle = '#000000';
+        context.stroke();
 
         startParametric(funcInputX, funcInputY, eval(t0), eval(t1));
+        context.beginPath();
+        context.moveTo(canvas.width/2, 0);
+        context.lineTo(canvas.width/2, canvas.height);
+        context.strokeStyle = '#000000';
+        context.stroke();
     }
 </script>
 
