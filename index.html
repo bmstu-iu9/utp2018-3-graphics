@@ -351,22 +351,23 @@
 
 <script>
     function drawUsuallyGraph() {
-    let canvas = document.getElementById('canvas2dUsually');
-    let context = canvas.getContext('2d');
+        let canvas = document.getElementById('canvas2dUsually');
+        let context = canvas.getContext('2d');
 
-    canvas.width = 650;
-    canvas.height = 650;
+        canvas.width = 650;
+        canvas.height = 650;
 
-    const funcInput = document.getElementById('oneVarIn').value;
-    const a = document.getElementById('leftIntervalBorder').value;
-    const b = document.getElementById('rightIntervalBorder').value;
-    const c = document.getElementById('bottomBorder').value;
-    const d = document.getElementById('upBorder').value;
-    const auto = document.getElementById('RangeAvto');
-    if (auto.checked == true) {
-      buildAll(funcInput, eval(a), eval(b));
-    } else {
-      buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
+        const funcInput = document.getElementById('oneVarIn').value;
+        const a = document.getElementById('leftIntervalBorder').value;
+        const b = document.getElementById('rightIntervalBorder').value;
+        const c = document.getElementById('bottomBorder').value;
+        const d = document.getElementById('upBorder').value;
+        const auto = document.getElementById('RangeAvto');
+        if (auto.checked == true) {
+        buildAll(funcInput, eval(a), eval(b));
+        } else {
+          buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
+        }
     }
 
     function drawFmpGraph() {
