@@ -49,7 +49,7 @@
     
     <div id="links">
         <a href="#usually">Функция одного переменного </a><br>
-        <a href="#fmp">Функция многих переменных </a><br>
+        <a href="#fmp">Функция двух переменных </a><br>
         <a href="#polar">Функция в полярных координатах </a><br>
         <a href="#implicity">Функция в неявном виде </a><br>
         <a href="#parametr">Функция в параметрическом виде </a><br><br>
@@ -98,7 +98,7 @@
 
         <div id="fmp">
 
-            <h3>Функция многих переменных </h3><br>
+            <h3>Функция двух переменных </h3><br>
             <label> f(x, y) = </label>
             <input type="text" name="fmp-fun" id="twoVarIn"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
@@ -130,13 +130,13 @@
                 <div class="applicate-fmp" id="applicate-fmp">
                     <h3>Ось Oz: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-applicate"
+                    <input type="text" name="from-applicate" id="z0Bound"
                            class="low-applicate" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-applicate"
+                    <input type="text" name="to-applicate" id="z1Bound"
                            class="high-applicate" placeholder="10"/>
-                    <label for="RangeAvtob">
-                        <input type="checkbox" checked="checked" id="RangeAvtob" name="RangeAvto"/>
+                    <label for="RangeAvtoZ">
+                        <input type="checkbox" checked="checked" id="RangeAvtoZ" name="RangeAvto"/>
                         авто
                     </label>
                 </div>
@@ -145,6 +145,7 @@
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
             <canvas id="canvas2dFmp" ></canvas>
+            <canvas id="canvasIsolines"></canvas>
         </div>
         <div id="polar">
 
@@ -374,10 +375,15 @@
     }
 
     function drawFmpGraph() {
-        const canvas = document.getElementById('canvas2dFmp');
+        const canvas3d = document.getElementById('canvas2dFmp');
 
-        canvas.width = 650;
-        canvas.height = 650;
+        canvas3d.width = 650;
+        canvas3d.height = 650;
+
+        const canvasIsolines = document.getElementById('canvasIsolines');
+
+        canvasIsolines.width = 650;
+        canvasIsolines.height = 650;
 
         const funcInput = document.getElementById('twoVarIn').value;
 
@@ -385,8 +391,15 @@
         const b = document.getElementById('bBoundTwoVar').value;
         const c = document.getElementById('cBoundTwoVar').value;
         const d = document.getElementById('dBoundTwoVar').value;
+        const auto = document.getElementById('RangeAvtoZ').checked;
+        const z0 = document.getElementById('z0Bound').value;
+        const z1 = document.getElementById('z1Bound').value;
 
-        start(funcInput, eval(a), eval(b), eval(c), eval(d));
+        if (auto) {
+            start(funcInput, eval(a), eval(b), eval(c), eval(d));
+        } else {
+            start(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1));
+        }
 
     }
 

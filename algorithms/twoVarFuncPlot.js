@@ -7,7 +7,7 @@ function funcFromString(f) {
 
 function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
     const f = funcFromString(funcIn);
-    if (a2 <= a1 || a4 <= a3 || z1 <= z0) {
+    if (a2 <= a1 || a4 <= a3 || (!autoZ && z1 <= z0)) {
         alert('Неверно заданы отрезки');
         return;
     }
@@ -48,7 +48,13 @@ function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
         }
     }
 
+    if (!autoZ) {
+        max = z1;
+        min = z0;
+    }
+
     surfacePlot(arr, min, max, a, b, c, d, autoZ);
+    isolinesPlot(arr, min, max, a, b, c, d);
 }
 
 let alpha = 0, beta = 0, gamma = 0;
@@ -272,12 +278,6 @@ function markLine(startPoint, endPoint, amount, a, b, c, d, min, max) {
 
 function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
 
-    if (!autoZ) {
-        max = z1;
-        min = z0;
-    }
-
-
     const canvas = document.getElementById('canvas2dFmp');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -335,8 +335,8 @@ function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
 
 }
 
-function isolinesPlot(arr) {
-    const canvas = document.getElementById('canvas2dFmp');
+function isolinesPlot(arr, min, max, a, b, c, d) {
+    const canvas = document.getElementById('canvasIsolines');
     const ctx = canvas.getContext('2d');
 
     const offset = 50;
@@ -354,13 +354,14 @@ function isolinesPlot(arr) {
     const xScale = (clientWidth - offset) / abs(b - a);
     const yScale = (clientWidth - offset) / abs(d - c);
 
-    checkedPoints.clear();
+    const checkedPoints = new Set();
 
     gridPlot(canvas, offset, a, b, c, d, xScale, yScale);
 
     for (let height = min + step; height <= max; height += step) {
         ctx.strokeStyle = heightToColor(height);
         const ms = new MarchingSquare(height, arr, checkedPoints);
+        ctx.lineWidth = 1.5;
         while (ms.findStartPoint()) {
             ctx.beginPath();
             const array = ms.buildLine();
