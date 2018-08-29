@@ -1,31 +1,13 @@
 'use strict';
 
-class Point3D {
-    constructor(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    sum(otherPoint) {
-        this.x += otherPoint.x;
-        this.y += otherPoint.y;
-        this.z += otherPoint.z;
-    }
-}
-
 function funcFromString(f) {
     f = f.replace(/\^/g, '**');
     return (x, y) => eval(f);
 }
 
-let f = funcFromString("(e^(-(x^2+y^2)/8))*(sin(x^2) + cos(y^2))");
-
-function start(funcIn, a1, a2, a3, a4) {
-  max = -Infinity;
-  min = Infinity;
-  f = funcFromString(funcIn);
-    if (a2 <= a1 || a4 <= a3 || z1 <= z0) {
+function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
+    const f = funcFromString(funcIn);
+    if (a2 <= a1 || a4 <= a3 || (!autoZ && z1 <= z0)) {
         alert('Неверно заданы отрезки');
         return;
     }
@@ -36,18 +18,24 @@ function start(funcIn, a1, a2, a3, a4) {
         return;
     }
 
-    a = a1;
-    b = a2;
-    c = a3;
-    d = a4;
+    const a = a1;
+    const b = a2;
+    const c = a3;
+    const d = a4;
+
+    const n = 250;
+
+    alpha = pi;
+    beta = pi / 2.6;
+    gamma = 1.4 * pi;
 
     const dx = Math.min((b - a) / n, 1);
     const dy = Math.min((d - c) / n, 1);
 
-    xScale = 400 / abs(b - a);
-    yScale = 400 / abs(d - c);
+    const arr = [];
 
-    arr = [];
+    let max = -Infinity;
+    let min = Infinity;
 
     for (let i = a, idx = 0; i <= b; i += dx, idx++) {
         arr.push([]);
@@ -60,37 +48,20 @@ function start(funcIn, a1, a2, a3, a4) {
         }
     }
 
-    surfacePlot();
+    if (!autoZ) {
+        max = z1;
+        min = z0;
+    }
+
+    surfacePlot(arr, min, max, a, b, c, d, autoZ);
+    isolinesPlot(arr, min, max, a, b, c, d);
 }
 
-let n = 250; //number of pieces
-//let a = -10, b = 10;
-//let c = -10, d = 10;
-
-const z0 = 4;
-const z1 = 20;
-const autoZ = true;
-
-//let max = -Infinity;
-//let min = Infinity;
-
-let arr = [];
-
-//----------------------------------
-const checkedPoints = new Set();
-//----------------------------------
-
-
-let alpha = pi;
-let beta = pi / 2.6;
-let gamma = 1.4 * pi;
+let alpha = 0, beta = 0, gamma = 0;
 
 
 const offsetX = 300;
 const offsetY = 500;
-
-let xScale = 1;
-let yScale = 1;
 
 const a11 = () => cos(alpha) * cos(gamma) - sin(alpha) * cos(beta) * sin(gamma);
 const a12 = () => -cos(alpha) * sin(gamma) - cos(beta) * sin(alpha) * cos(gamma);
@@ -100,16 +71,19 @@ const a22 = () => -sin(alpha) * sin(gamma) + cos(beta) * cos(alpha) * cos(gamma)
 const a23 = () => -sin(beta) * cos(alpha);
 
 
-function toCanvasCoordinates(point) {
-    let zScale = 400 / abs(max - min);
-    const cX = a11() * (point.x - (a + (b - a) / 2)) * xScale +
-        a12() * (point.y - (c + (d - c) / 2)) * yScale +
-        a13() * ((point.z - min) * zScale);
-    const cY = a21() * (point.x - (a + (b - a) / 2)) * xScale +
-        a22() * (point.y - (c + (d - c) / 2)) * yScale +
-        a23() * ((point.z - min) * zScale);
-
-    return new Point2D(cX, cY);
+function getCoordinatesConverter(max, min, a, b, c, d) {
+    const xScale = 400 / (b - a);
+    const yScale = 400 / (d - c);
+    const zScale = 400 / (max - min);
+    return (point) => {
+        const cX = a11() * (point.x - (a + (b - a) / 2)) * xScale +
+            a12() * (point.y - (c + (d - c) / 2)) * yScale +
+            a13() * ((point.z - min) * zScale);
+        const cY = a21() * (point.x - (a + (b - a) / 2)) * xScale +
+            a22() * (point.y - (c + (d - c) / 2)) * yScale +
+            a23() * ((point.z - min) * zScale);
+        return new Point2D(cX, cY);
+    }
 }
 
 function rotateRight() {
@@ -120,194 +94,6 @@ function rotateRight() {
 function rotateLeft() {
     gamma -= pi / 10;
     if (gamma < 0) gamma += 2 * pi;
-}
-
-class MarchingSquare {
-
-    constructor(h) {
-        this.h = h;
-        this.NONE = 0;
-        this.UP = 1;
-        this.LEFT = 2;
-        this.DOWN = 3;
-        this.RIGHT = 4;
-
-        this.borderFound = false;
-
-        this.nextStep = this.NONE;
-
-        this.i = 1;
-        this.j = 1;
-
-        this.x0 = 0;
-        this.y0 = 0;
-    }
-
-    findStartPoint() { //Ищет для каждого уровня начальные точки для всех линий данного уровня
-        for (; this.i < arr.length - 1; this.i++) {
-            this.j %= (arr.length - 1);
-            if (this.j === 0) {
-                this.j = 1;
-                this.i++;
-            }
-            for (; this.j < arr.length - 1; this.j++) {
-                if ((arr[this.i][this.j].z <= this.h ||
-                        (arr[this.i][this.j].z > this.h &&
-                            (arr[this.i - 1][this.j - 1].z <= this.h ||
-                                arr[this.i - 1][this.j].z <= this.h || arr[this.i][this.j - 1].z <= this.h))) &&
-                    !checkedPoints.has(this.i * arr.length + this.j)) {
-                    this.x0 = this.i;
-                    this.y0 = this.j;
-                    checkedPoints.add(this.i * arr.length + this.j);
-                    this.j++;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    buildLine() {
-        let border = 0;
-        const linePoints = [];
-        let x = this.x0, y = this.y0;
-        for (; ;) {
-
-            this.moveNext(x, y);
-
-            if (x !== this.x0 || y !== this.y0) {
-                if (x === 0 || y === 0 || x === arr.length - 1 || y === arr.length - 1) {
-                    border++;
-                    if (border === 2) {
-                        this.borderFound = false;
-                        return linePoints;
-                    }
-                    x = this.x0;
-                    y = this.y0;
-                    this.nextStep = this.NONE;
-                    this.borderFound = true;
-                    linePoints.push([NaN, NaN]);
-                    continue;
-                }
-            }
-            checkedPoints.add(x * arr.length + y);
-            if (x > 0 && x < arr.length && y > 0 && y < arr.length) {
-                let X, Y;
-                switch (this.nextStep) { //Линейная интерполяция на основе следующего шага
-                    case this.UP:
-                        Y = arr[x][y].y;
-                        X = arr[x - 1][y].x +
-                            (arr[x][y].x - arr[x - 1][y].x) * (this.h - arr[x - 1][y].z) / (arr[x][y].z - arr[x - 1][y].z);
-                        linePoints.push([X, Y]);
-                        break;
-                    case this.DOWN:
-                        X = arr[x - 1][y - 1].x +
-                            (arr[x][y - 1].x - arr[x - 1][y - 1].x) * (this.h - arr[x - 1][y - 1].z) / (arr[x][y - 1].z - arr[x - 1][y - 1].z);
-                        Y = arr[x][y - 1].y;
-                        linePoints.push([X, Y]);
-                        break;
-                    case this.RIGHT:
-                        Y = arr[x][y - 1].y +
-                            (arr[x][y].y - arr[x][y - 1].y) * (this.h - arr[x][y - 1].z) / (arr[x][y].z - arr[x][y - 1].z);
-                        X = arr[x][y].x;
-                        linePoints.push([X, Y]);
-                        break;
-                    case this.LEFT:
-                        Y = arr[x - 1][y - 1].y +
-                            (arr[x - 1][y].y - arr[x - 1][y - 1].y) * (this.h - arr[x - 1][y - 1].z) / (arr[x - 1][y].z - arr[x - 1][y - 1].z);
-                        X = arr[x - 1][y].x;
-                        linePoints.push([X, Y]);
-                        break;
-                }
-            }
-            switch (this.nextStep) {
-                case this.UP:
-                    y++;
-                    break;
-                case this.LEFT:
-                    x--;
-                    break;
-                case this.DOWN:
-                    y--;
-                    break;
-                case this.RIGHT:
-                    x++;
-                    break;
-                default:
-                    break;
-            }
-            if (x === this.x0 && y === this.y0) break;
-        }
-        if (linePoints.length > 0) {
-            linePoints.push([linePoints[0][0], linePoints[0][1]]);
-        }
-        return linePoints;
-    }
-
-    check(x, y) {
-        if (x < 0 || y < 0 || x >= arr.length || y >= arr.length) return false;
-        return arr[x][y].z <= this.h;
-    }
-
-    moveNext(x, y) {
-        let state = 0;
-
-        const leftTop = this.check(x - 1, y - 1);
-        const rightTop = this.check(x, y - 1);
-        const bottomLeft = this.check(x - 1, y);
-        const bottomRight = this.check(x, y);
-
-
-        if (leftTop) state |= 1;
-        if (rightTop) state |= 2;
-        if (bottomLeft) state |= 4;
-        if (bottomRight) state |= 8;
-
-        if (this.borderFound) {
-            state = 15 - state;
-        }
-
-        switch (state) {
-            case 1:
-            case 5:
-            case 13:
-                this.nextStep = this.DOWN;
-                break;
-            case 2:
-            case 3:
-            case 7:
-                this.nextStep = this.RIGHT;
-                break;
-            case 4:
-            case 12:
-            case 14:
-                this.nextStep = this.LEFT;
-                break;
-            case 6:
-                if (this.nextStep === this.DOWN) {
-                    this.nextStep = this.LEFT;
-                } else {
-                    this.nextStep = this.RIGHT;
-                }
-                break;
-            case 8:
-            case 10:
-            case 11:
-                this.nextStep = this.UP;
-                break;
-            case 9:
-                if (this.nextStep === this.RIGHT) {
-                    this.nextStep = this.DOWN;
-                } else {
-                    this.nextStep = this.UP;
-                }
-                break;
-            default:
-                this.nextStep = this.NONE;
-                break;
-        }
-    }
 }
 
 function getColorizer(min, max) {
@@ -330,15 +116,7 @@ function getColorizer(min, max) {
     }
 }
 
-function mouseCoordinates(canvas, evnt) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: evnt.clientX - rect.left,
-        y: evnt.clientY - rect.top
-    };
-}
-
-function axis3DPlot(backSide = false) {
+function axis3DPlot(backSide = false, a, b, c, d, min, max) {
 
     const canvas = document.getElementById('canvas2dFmp');
     const ctx = canvas.getContext('2d');
@@ -348,6 +126,11 @@ function axis3DPlot(backSide = false) {
     let mainPoint = new Point3D(b, c, min);
 
     ctx.beginPath();
+
+    const xScale = 400 / (b - a);
+    const yScale = 400 / (d - c);
+
+    const toCanvasCoordinates = getCoordinatesConverter(max, min, a, b, c, d);
 
     if (backSide) {
         let backPoint = new Point2D(0, 0);
@@ -430,22 +213,22 @@ function axis3DPlot(backSide = false) {
         ctx.closePath();
         ctx.stroke();
 
-        markLines(mainPoint);
+        markLines(mainPoint, a, b, c, d, min, max);
     }
 
 }
 
-function markLines(mainPoint) {
+function markLines(mainPoint, a, b, c, d, min, max) {
     const addPointY = new Point3D(mainPoint.x, mainPoint.y === c ? mainPoint.y + d - c : mainPoint.y - d + c, mainPoint.z);
     const addPointX = new Point3D(mainPoint.x === a ? mainPoint.x + b - a : mainPoint.x - b + a, mainPoint.y, mainPoint.z);
     const addPointZ = new Point3D(addPointX.x, addPointX.y, mainPoint.z + max - min);
 
-    markLine(mainPoint, addPointX, 10);
-    markLine(mainPoint, addPointY, 10);
-    markLine(addPointX, addPointZ, 10);
+    markLine(mainPoint, addPointX, 10, a, b, c, d, min, max);
+    markLine(mainPoint, addPointY, 10, a, b, c, d, min, max);
+    markLine(addPointX, addPointZ, 10, a, b, c, d, min, max);
 }
 
-function markLine(startPoint, endPoint, amount) {
+function markLine(startPoint, endPoint, amount, a, b, c, d, min, max) {
 
     const canvas = document.getElementById('canvas2dFmp');
     const ctx = canvas.getContext('2d');
@@ -453,15 +236,20 @@ function markLine(startPoint, endPoint, amount) {
     ctx.font = '10px Arial';
     ctx.fillStyle = 'black';
 
+    const xScale = 400 / (b - a);
+    const yScale = 400 / (d - c);
+
     const v = new Point3D((endPoint.x - startPoint.x) / amount, (endPoint.y - startPoint.y) / amount, (endPoint.z - startPoint.z) / amount);
     const s = new Point3D(startPoint.x + v.x, startPoint.y + v.y, startPoint.z + v.z);
+
+    const toCanvasCoordinates = getCoordinatesConverter(max, min, a, b, c, d);
 
     if (abs(startPoint.x - endPoint.x) < 0.01) { //vertical line
         const oZ = startPoint.z !== endPoint.z;
         while (abs(s.y - endPoint.y) > 0.1 || abs(s.z - endPoint.z) > 0.1) {
             const leftPoint2D = toCanvasCoordinates(new Point3D(s.x + (b - a) / 50, s.y, s.z));
             const rightPoint2D = toCanvasCoordinates(new Point3D(s.x - (b - a) / 50, s.y, s.z));
-            const textPoint2D = toCanvasCoordinates(new Point3D(s.x >= a ? s.x - (b - a) / 25 : s.x + (b - a) / 25, s.y, s.z));
+            const textPoint2D = toCanvasCoordinates(new Point3D(s.x >= a ? s.x - (b - a) / 10 : s.x + (b - a) / 25, s.y, s.z));
             ctx.beginPath();
             ctx.moveTo(offsetX + leftPoint2D.x, offsetY - leftPoint2D.y);
             ctx.lineTo(offsetX + rightPoint2D.x, offsetY - rightPoint2D.y);
@@ -488,12 +276,7 @@ function markLine(startPoint, endPoint, amount) {
 }
 
 
-function surfacePlot() {
-
-    if (!autoZ) {
-        max = z1;
-        min = z0;
-    }
+function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
 
     const canvas = document.getElementById('canvas2dFmp');
     const ctx = canvas.getContext('2d');
@@ -501,7 +284,12 @@ function surfacePlot() {
 
     const heightToColor = getColorizer(min, max);
 
-    axis3DPlot(true);
+    axis3DPlot(true, a, b, c, d, min, max);
+
+    const xScale = 400 / (b-a);
+    const yScale = 400 / (d - c);
+
+    const toCanvasCoordinates = getCoordinatesConverter(max, min, a, b, c, d);
 
     if (gamma >= 0 && gamma < pi) {
         for (let x = 0; x < arr.length - 1; x++) {
@@ -543,80 +331,12 @@ function surfacePlot() {
         }
     }
 
-    axis3DPlot();
+    axis3DPlot(false, a, b, c, d, min, max);
 
 }
 
-function isolinesAxisPlot(offset) {
-    const canvas = document.getElementById('canvas2dFmp');
-    const ctx = canvas.getContext('2d');
-    ctx.strokeStyle = 'black';
-    ctx.font = '12px Arial';
-    ctx.fillStyle = 'black';
-
-    const upPoint = new Point2D(offset, 0);
-    const bottomPoint = new Point2D(offset, canvas.height - offset);
-    const rightPoint = new Point2D(canvas.width, canvas.height - offset);
-    ctx.beginPath();
-    ctx.moveTo(upPoint.x, upPoint.y);
-    ctx.lineTo(bottomPoint.x, bottomPoint.y);
-    ctx.lineTo(rightPoint.x, rightPoint.y);
-    ctx.stroke();
-    ctx.closePath();
-    //-------------------------------------------
-    ctx.beginPath();
-    //----------------------------------------------
-    const amount = 15;
-    const displayDY = (bottomPoint.y - upPoint.y) / amount;
-    const dy = (d - c) / amount;
-    let value = d - dy;
-    const pt = new Point2D(upPoint.x, upPoint.y + displayDY);
-    while (pt.y < bottomPoint.y) {
-        ctx.moveTo(pt.x, pt.y);
-        ctx.lineTo(pt.x + 7, pt.y);
-        ctx.stroke();
-        ctx.fillText(value.toFixed(2), pt.x - 35, pt.y);
-        value -= dy;
-        pt.y += displayDY;
-    }
-    ctx.fillText(value.toFixed(2), pt.x - 35, pt.y);
-    //-----------------------------------------------------
-    const displayDX = (rightPoint.x - bottomPoint.x) / amount;
-    const dx = (b - a) / amount;
-
-    value = a;
-    while (pt.x < rightPoint.x) {
-        ctx.moveTo(pt.x, pt.y);
-        ctx.lineTo(pt.x, pt.y - 7);
-        ctx.stroke();
-        ctx.fillText(value.toFixed(2), pt.x, pt.y + 15);
-        value += dx;
-        pt.x += displayDX;
-    }
-    ctx.closePath();
-
-    ctx.font = '18px Arial';
-    ctx.fillText('Y', 4, (canvas.height - offset) / 2);
-    ctx.fillText('X', canvas.width / 2, canvas.height - offset / 4);
-
-    canvas.addEventListener('mousemove', (evnt) => {
-        const coordinates = mouseCoordinates(canvas, evnt);
-        const x = coordinates.x;
-        const y = coordinates.y;
-        if (x >= offset && y <= canvas.height - offset) {
-            ctx.clearRect(canvas.width / 1.2, canvas.height - 20, canvas.width / 6, 20);
-            ctx.font = '12px Arial';
-            ctx.fillStyle = 'black';
-            const xRatio = (b - a) / (canvas.width - offset);
-            const yRatio = (d - c) / (canvas.height - offset);
-            ctx.fillText('x: ' + (a + xRatio * (x - 40)).toFixed(2) + '  y: ' +
-                (d - y * yRatio).toFixed(2), canvas.width / 1.2, canvas.height - 10);
-        }
-    }, false);
-}
-
-function isolinesPlot() {
-    const canvas = document.getElementById('canvas2dFmp');
+function isolinesPlot(arr, min, max, a, b, c, d) {
+    const canvas = document.getElementById('canvasIsolines');
     const ctx = canvas.getContext('2d');
 
     const offset = 50;
@@ -634,11 +354,14 @@ function isolinesPlot() {
     const xScale = (clientWidth - offset) / abs(b - a);
     const yScale = (clientWidth - offset) / abs(d - c);
 
-    checkedPoints.clear();
+    const checkedPoints = new Set();
+
+    gridPlot(canvas, offset, a, b, c, d, xScale, yScale);
 
     for (let height = min + step; height <= max; height += step) {
         ctx.strokeStyle = heightToColor(height);
-        const ms = new MarchingSquare(height);
+        const ms = new MarchingSquare(height, arr, checkedPoints);
+        ctx.lineWidth = 1.5;
         while (ms.findStartPoint()) {
             ctx.beginPath();
             const array = ms.buildLine();
@@ -653,5 +376,5 @@ function isolinesPlot() {
             ctx.closePath();
         }
     }
-    isolinesAxisPlot(offset);
+    markAxis(canvas, offset, a, b, c, d);
 }

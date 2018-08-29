@@ -49,7 +49,7 @@
     
     <div id="links">
         <a href="#usually">Функция одного переменного </a><br>
-        <a href="#fmp">Функция многих переменных </a><br>
+        <a href="#fmp">Функция двух переменных </a><br>
         <a href="#polar">Функция в полярных координатах </a><br>
         <a href="#implicity">Функция в неявном виде </a><br>
         <a href="#parametr">Функция в параметрическом виде </a><br><br>
@@ -69,23 +69,23 @@
                 <div class='abscissa-usually' id="abscissa-usually">
                     <h3>Ось Ox: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-abscissa"
+                    <input type="text" name="from-abscissa" id="aBoundOneVar"
                            class="low-abscissa" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-abscissa"
+                    <input type="text" name="to-abscissa" id="bBoundOneVar"
                            class="high-abscissa" placeholder="10"/>
                 </div><br>
 
                 <div class="ordinate-usually" id="ordinate-usually">
                     <h3>Ось Oy: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-ordinate"
+                    <input type="text" name="from-ordinate" id="cBoundOneVar"
                            class="low-ordinate" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-ordinate"
+                    <input type="text" name="to-ordinate" id="dBoundOneVar"
                            class="high-ordinate" placeholder="10"/>
-                    <label for="RangeAvtoa">
-                        <input type="checkbox" checked="checked" id="RangeAvtoa" name="RangeAvto"/>
+                    <label for="RangeAvto">
+                        <input type="checkbox" checked="checked" id="RangeAvto" name="RangeAvto"/>
                         авто
                     </label>
                 </div>
@@ -98,7 +98,7 @@
 
         <div id="fmp">
 
-            <h3>Функция многих переменных </h3><br>
+            <h3>Функция двух переменных </h3><br>
             <label> f(x, y) = </label>
             <input type="text" name="fmp-fun" id="twoVarIn"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
@@ -110,33 +110,33 @@
                 <div class='abscissa-fmp' id="abscissa-fmp">
                     <h3>Ось Ox: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-abscissa"
+                    <input type="text" name="from-abscissa" id="aBoundTwoVar"
                            class="low-abscissa" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-abscissa"
+                    <input type="text" name="to-abscissa" id="bBoundTwoVar"
                            class="high-abscissa" placeholder="10"/>
                 </div><br>
 
                 <div class="ordinate-fmp" id="ordinate-fmp">
                     <h3>Ось Oy: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-ordinate"
+                    <input type="text" name="from-ordinate" id="cBoundTwoVar"
                            class="low-ordinate" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-ordinate"
+                    <input type="text" name="to-ordinate" id="dBoundTwoVar"
                            class="high-ordinate" placeholder="10"/>
                 </div><br>
 
                 <div class="applicate-fmp" id="applicate-fmp">
                     <h3>Ось Oz: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-applicate"
+                    <input type="text" name="from-applicate" id="z0Bound"
                            class="low-applicate" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-applicate"
+                    <input type="text" name="to-applicate" id="z1Bound"
                            class="high-applicate" placeholder="10"/>
-                    <label for="RangeAvtob">
-                        <input type="checkbox" checked="checked" id="RangeAvtob" name="RangeAvto"/>
+                    <label for="RangeAvtoZ">
+                        <input type="checkbox" checked="checked" id="RangeAvtoZ" name="RangeAvto"/>
                         авто
                     </label>
                 </div>
@@ -145,6 +145,7 @@
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
             <canvas id="canvas2dFmp" ></canvas>
+            <canvas id="canvasIsolines"></canvas>
         </div>
         <div id="polar">
 
@@ -176,20 +177,20 @@
                 <div class='abscissa-implicity' id="abscissa-implicity">
                     <h3>Ось Ox: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-abscissa"
+                    <input type="text" name="from-abscissa" id="aBoundImpl"
                            class="low-abscissa" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-abscissa"
+                    <input type="text" name="to-abscissa" id="bBoundImpl"
                            class="high-abscissa" placeholder="10"/>
                 </div><br>
 
                 <div class="ordinate-implicity" id="ordinate-implicity">
                     <h3>Ось Oy: </h3>
                     <label>интервал: от </label>
-                    <input type="text" name="from-ordinate"
+                    <input type="text" name="from-ordinate" id="cBoundImpl"
                            class="low-ordinate" placeholder="-10"/>
                     <label> до </label>
-                    <input type="text" name="to-ordinate"
+                    <input type="text" name="to-ordinate" id="dBoundImpl"
                            class="high-ordinate" placeholder="10"/>
                 </div><br>
 
@@ -348,6 +349,9 @@
 <script src="./algorithms/twoVarFuncPlot.js" type="text/javascript"></script>
 <script src="./algorithms/implicitFuncPlot.js" type="text/javascript"></script>
 <script src="./algorithms/parametricPlot.js" type="text/javascript"></script>
+<script src="./algorithms/bindings.js" type="text/javascript"></script>
+<script src="./algorithms/axisPlot.js" type="text/javascript"></script>
+<script src="./algorithms/classes.js" type="text/javascript"></script>
 
 <script>
     function drawUsuallyGraph() {
@@ -358,10 +362,10 @@
         canvas.height = 650;
 
         const funcInput = document.getElementById('oneVarIn').value;
-        const a = document.getElementById('leftIntervalBorder').value;
-        const b = document.getElementById('rightIntervalBorder').value;
-        const c = document.getElementById('bottomBorder').value;
-        const d = document.getElementById('upBorder').value;
+        const a = document.getElementById('aBoundOneVar').value;
+        const b = document.getElementById('bBoundOneVar').value;
+        const c = document.getElementById('cBoundOneVar').value;
+        const d = document.getElementById('dBoundOneVar').value;
         const auto = document.getElementById('RangeAvto');
         if (auto.checked == true) {
         buildAll(funcInput, eval(a), eval(b));
@@ -371,39 +375,36 @@
     }
 
     function drawFmpGraph() {
-        const canvas = document.getElementById('canvas2dFmp');
-        const context = canvas.getContext('2d');
+        const canvas3d = document.getElementById('canvas2dFmp');
 
-        canvas.width = 650;
-        canvas.height = 650;
+        canvas3d.width = 650;
+        canvas3d.height = 650;
+
+        const canvasIsolines = document.getElementById('canvasIsolines');
+
+        canvasIsolines.width = 650;
+        canvasIsolines.height = 650;
 
         const funcInput = document.getElementById('twoVarIn').value;
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
 
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
+        const a = document.getElementById('aBoundTwoVar').value;
+        const b = document.getElementById('bBoundTwoVar').value;
+        const c = document.getElementById('cBoundTwoVar').value;
+        const d = document.getElementById('dBoundTwoVar').value;
+        const auto = document.getElementById('RangeAvtoZ').checked;
+        const z0 = document.getElementById('z0Bound').value;
+        const z1 = document.getElementById('z1Bound').value;
 
-        const a = document.getElementById('leftIntervalBorder').value;
-        const b = document.getElementById('rightIntervalBorder').value;
-        const c = document.getElementById('bottomBorder').value;
-        const d = document.getElementById('upBorder').value;
-        start(funcInput, eval(a), eval(b), eval(c), eval(d));
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
+        if (auto) {
+            start(funcInput, eval(a), eval(b), eval(c), eval(d));
+        } else {
+            start(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1));
+        }
+
     }
 
     function drawPolarGraph() {
         const canvas = document.getElementById('canvas2dPolar');
-        const context = canvas.getContext('2d');
-        let canvas = document.getElementById('canvas2dPolar');
-        let context = canvas.getContext('2d');
 
         canvas.width = 650;
         canvas.height = 650;
@@ -411,61 +412,27 @@
         const t0 = document.getElementById('polarLowerBound').value;
         const t1 = document.getElementById('polarUpperBound').value;
         const funcInput = document.getElementById('polarIn').value;
-     
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
 
         startPolar(funcInput, eval(t0), eval(t1));
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
-
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
     }
 
     function drawImplicityGraph() {
         const canvas = document.getElementById('canvas2dImplicity');
-        const context = canvas.getContext('2d');
-     
-        let canvas = document.getElementById('canvas2dImplicity');
-        let context = canvas.getContext('2d');
 
         canvas.width = 650;
         canvas.height = 650;
 
         const funcInput = document.getElementById('implicitIn').value;
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
 
-        const a = document.getElementById('leftIntervalBorder').value;
-        const b = document.getElementById('rightIntervalBorder').value;
-        const c = document.getElementById('bottomBorder').value;
-        const d = document.getElementById('upBorder').value;
+        const a = document.getElementById('aBoundImpl').value;
+        const b = document.getElementById('bBoundImpl').value;
+        const c = document.getElementById('cBoundImpl').value;
+        const d = document.getElementById('dBoundImpl').value;
         startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
-
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
     }
 
     function drawParametrGraph() {
         const canvas = document.getElementById('canvas2dParametr');
-        const context = canvas.getContext('2d');
-        let canvas = document.getElementById('canvas2dParametr');
-        let context = canvas.getContext('2d');
 
         canvas.width = 650;
         canvas.height = 650;
@@ -474,22 +441,10 @@
         const t1 = document.getElementById('parametricUpperBound').value;
         const funcInputX = document.getElementById('parametricInX').value;
         const funcInputY = document.getElementById('parametricInY').value;
-     
-        context.fillStyle = "#ffffff";
-        context.fillRect(0, 0, canvas.width, canvas.height);
 
-        context.beginPath();
-        context.moveTo(0, canvas.height/2);
-        context.lineTo(canvas.width, canvas.height/2);
-        context.strokeStyle = '#000000';
-        context.stroke();
 
         startParametric(funcInputX, funcInputY, eval(t0), eval(t1));
-        context.beginPath();
-        context.moveTo(canvas.width/2, 0);
-        context.lineTo(canvas.width/2, canvas.height);
-        context.strokeStyle = '#000000';
-        context.stroke();
+
     }
 </script>
 

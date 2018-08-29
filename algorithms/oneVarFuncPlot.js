@@ -1,28 +1,5 @@
 'use strict';
 
-const sqrt = (x) => Math.sqrt(x);
-const sin = (x) => Math.sin(x);
-const cos = (x) => Math.cos(x);
-const tg = (x) => Math.tan(x);
-const tan = tg;
-const ctg = (x) => 1 / Math.tan(x);
-const abs = (x) => Math.abs(x);
-const log = (x) => Math.log(x);
-const asin = (x) => Math.asin(x);
-const acos = (x) => Math.acos(x);
-const atg = (x) => Math.atan(x);
-const actg = (x) => Math.PI / 2 - Math.atan(x);
-const pi = Math.PI;
-const e = Math.E;
-
-
-class Point2D {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
 function functionsFromString(f) {
     let i = 0, j = 0;
     let functions = [];
@@ -41,16 +18,13 @@ function functionsFromString(f) {
 let funcs = functionsFromString('sin(x)'); //Когда нибудь здесь будет пользовательский ввод, возможно
 
 function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
+    const canvas = document.getElementById('canvas2dUsually');
     funcs = functionsFromString(input);
-    a = leftBorder;
-    b = rightBorder;
-    max = -Infinity, min = Infinity;
-    autoY = auto;
-    if (!auto) {
-      c = botBorder;
-      d = upBorder;
-    }
-    if (b <= a || (d <= c && !auto)) {
+    const a = leftBorder;
+    const b = rightBorder;
+
+    const offset = 50;
+    if (rightBorder <= leftBorder || (upBorder <= botBorder && !auto)) {
         alert('Неверно заданы отрезки');
         return;
     }
@@ -67,27 +41,21 @@ function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBord
     }
     const pointSets = [];
     for (let func of funcs) {
-        pointSets.push(getPoints(func, a, b));
+        pointSets.push(getPoints(func, a, b, auto, botBorder, upBorder));
     }
-    gridPlot();
+    const c = !auto ? botBorder : min;
+    const d = !auto ? upBorder : max;
+    gridPlot(canvas, offset, a, b, c, d, getXScale(offset, a, b), getYScale(offset, max, min, auto));
     for (let i = 0; i < pointSets.length; i++) {
-        plot(pointSets[i], colors[i]);
+        plot(pointSets[i], colors[i], a, b, offset, auto, c, d);
     }
-    markAxis();
+    markAxis(canvas, offset, a, b, c, d);
 }
 
-
-let a = -10, b = 10;
-let c = -10, d = 10;
-let max = -Infinity, min = Infinity;
-let offset = 50;
 const canvSize = 650;
 
 const colors = ['blue', 'red', 'green', 'orange', 'black'];
 let plotNumber = 0;
-
-//TODO here IS AUTO Y
-let autoY = true;
 
 function firstDerivative(f, x) {
     const der = (f(x + 0.0001) - f(x)) / 0.0001;
@@ -99,11 +67,11 @@ function firstDerivative(f, x) {
 }
 
 
-function getXScale() {
+function getXScale(offset, a, b) {
     return (canvSize - offset) / (b - a);
 }
 
-function getYScale() {
+function getYScale(offset, max, min, autoY) {
     if (autoY) {
         if (max !== min) {
             return (canvSize - offset) / abs(max - min);
@@ -111,7 +79,7 @@ function getYScale() {
             return max === 0 ? 0 : 200 / max;
         }
     } else {
-        return (canvSize - offset) / (d - c);
+        return (canvSize - offset) / (max - min);
     }
 }
 
@@ -120,6 +88,9 @@ let upAsympto = false;
 let downAsympto = false;
 
 const singularities = [];
+
+let max = -Infinity;
+let min = Infinity;
 
 
 function quadratureFirst(f1, f2, f3) {
@@ -210,134 +181,8 @@ function checkCurve(a, b, c) {
     return (b < a && b < c) || (b > a && b > c);
 }
 
-function gridPlot() {
-    const canvas = document.getElementById('canvas2dUsually');
-    const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.strokeStyle = 'grey';
-    ctx.lineWidth = 0.5;
-
-    const dx = (canvas.width - offset) / 30;
-    const dy = (canvas.height - offset) / 30;
-
-    for (let y = dy; y < canvas.height - offset; y += dy) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-    for (let x = offset; x < canvas.width; x += dx) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-    const xScale = getXScale();
-    const yScale = getYScale();
-
-    if (a < 0 && b > 0) { //рисуем вертикальную линию
-        ctx.strokeRect(offset, (canvSize - offset) + min * yScale, canvas.width - offset, 1.5);
-    }
-
-    if (min < 0 && max > 0) { // рисуем горизонтальную линию
-        ctx.strokeRect(offset - a * xScale, 0, 1, canvas.height - offset);
-    }
-}
-
-function mouseCoordinates(canvas, evnt) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: (evnt.clientX - rect.left),
-        y: (evnt.clientY - rect.top)
-    };
-}
-
-function markAxis() {
-    const canvas = document.getElementById('canvas2dUsually');
-    const ctx = canvas.getContext('2d');
-
-    ctx.clearRect(0, 0, offset, canvas.height);
-    ctx.clearRect(0, canvas.height - offset, canvas.width, offset);
-
-    ctx.strokeStyle = 'black';
-    ctx.font = '12px Arial';
-    ctx.fillStyle = 'black';
-
-    const upLeftPoint = new Point2D(offset, 0);
-    const bottomLeftPoint = new Point2D(offset, canvSize - offset);
-    const bottomRightPoint = new Point2D(canvSize, canvSize - offset);
-
-    ctx.beginPath();
-    ctx.moveTo(upLeftPoint.x, upLeftPoint.y);
-    ctx.lineTo(bottomLeftPoint.x, bottomLeftPoint.y);
-    ctx.lineTo(bottomRightPoint.x, bottomRightPoint.y);
-    ctx.stroke();
-    ctx.closePath();
-
-
-    ctx.beginPath();
-
-    const amount = 15;
-    const displayDY = (bottomLeftPoint.y - upLeftPoint.y) / amount;
-    const dy = (max - min) / amount;
-    const pt = new Point2D(upLeftPoint.x, upLeftPoint.y + displayDY);
-
-    let value = max - dy;
-
-    while (pt.y < bottomLeftPoint.y) {
-        ctx.moveTo(pt.x, pt.y);
-        ctx.lineTo(pt.x + 7, pt.y);
-        ctx.stroke();
-        ctx.fillText(value.toFixed(2), pt.x - 45, pt.y);
-        value -= dy;
-        pt.y += displayDY;
-    }
-    ctx.fillText(value.toFixed(2), pt.x - 45, pt.y);
-
-    const displayDX = (bottomRightPoint.x - bottomLeftPoint.x) / amount;
-    const dx = (b - a) / amount;
-
-    value = a;
-
-    while (pt.x < bottomRightPoint.x) {
-        ctx.moveTo(pt.x, pt.y);
-        ctx.lineTo(pt.x, pt.y - 7);
-        ctx.stroke();
-        ctx.fillText(value.toFixed(2), pt.x, pt.y + 15);
-        value += dx;
-        pt.x += displayDX;
-    }
-    ctx.closePath();
-
-    ctx.font = '18px Arial';
-    ctx.fillText('Y', 4, (canvas.height - offset) / 2);
-    ctx.fillText('X', canvas.width / 2, canvas.height - offset / 4);
-
-    canvas.addEventListener('mousemove', (evnt) => {
-        const coordinates = mouseCoordinates(canvas, evnt);
-        const x = coordinates.x;
-        const y = coordinates.y;
-        if (x >= offset && y <= canvas.height - offset) {
-            ctx.clearRect(canvas.width / 1.3, canvas.height - 20, 3 * canvas.width / 13, 20);
-            ctx.font = '12px Arial';
-            ctx.fillStyle = 'black';
-            const xRatio = (b - a) / (canvas.width - offset);
-            const yRatio = (max - min) / (canvas.height - offset);
-            ctx.fillText('x: ' + (a + xRatio * (x - offset)).toFixed(2) + '  y: ' +
-                (max - y * yRatio).toFixed(2), canvas.width / 1.2, canvas.height - 10);
-        }
-    }, false);
-
-}
-
-function getPoints(func, a, b) {
+function getPoints(func, a, b, autoY = true, c, d) {
 
     const delta = Math.min((b - a) / 150, 1);
     const N = delta * 150 === b - a ? 150 : b - a;
@@ -380,7 +225,7 @@ function getPoints(func, a, b) {
     return pointSet;
 }
 
-function plot(pointSet, color = 'black') {
+function plot(pointSet, color = 'black', a, b, offset, autoY = true, c, d) {
 
 
     const canvas = document.getElementById('canvas2dUsually');
@@ -397,8 +242,8 @@ function plot(pointSet, color = 'black') {
     const pointArr = [...pointSet].sort((a, b) => a.x - b.x);
     console.log('kek', min, downAsympto, upAsympto);
 
-    const xScale = getXScale();
-    const yScale = getYScale();
+    const xScale = getXScale(offset, a, b);
+    const yScale = getYScale(offset, d, c, autoY);
 
     for (let i = 0; i < pointArr.length; i++) {
         if (isNaN(pointArr[i].y)) {
