@@ -28,6 +28,8 @@
     <h2>
         Как построить график?
     </h2>
+    <br>
+    
     <div class="subabout">
         <p>
             Для построения графика функции сначала необходимо выбрать тип функции.
@@ -43,9 +45,11 @@
         </p>
     </div>
 </div>
+<br>
 
 <div class="functions">
     <h2>Выберете тип функции</h2>
+    <br>
 
     <div id="links">
         <a href="#usually">Функция одного переменного </a><br>
@@ -61,9 +65,9 @@
             <label> f(x) = </label>
 
             <input type="text" name="usually-fun"
-                   class="usually-graph-input" id="oneVarIn" placeholder="Например: x^3 + 5x -6"/><br>
+                   class="usually-graph-input" id="oneVarIn" placeholder="Например: x^3 + 5x -6"/><br><br>
 
-            <h3>Задайте диапазон значений по осям</h3><br>
+            <h3>Задайте диапазон значений по осям</h3><br><br>
 
             <div class="coordinates-range">
                 <div class='abscissa-usually' id="abscissa-usually">
@@ -101,9 +105,9 @@
             <h3>Функция двух переменных </h3><br>
             <label> f(x, y) = </label>
             <input type="text" name="fmp-fun" id="twoVarIn"
-                   class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br>
+                   class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br><br>
 
-            <h3>Задайте диапазон значений по осям</h3><br>
+            <h3>Задайте диапазон значений по осям</h3><br><br>
 
             <div class="coordinates-range">
 
@@ -146,10 +150,13 @@
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
             <canvas id="canvas2dFmp" height="0" width="0"></canvas>
             <canvas id="canvasIsolines" height="0" width="0"></canvas>
+            
+            <p><button id = 'ReturnLeft' onclick='returnLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
+               <button id = 'ReturnRight' onclick='returnRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p>
         </div>
         <div id="polar">
 
-            <h3>Функция в полярных координатах </h3><br>
+            <h3>Функция в полярных координатах </h3><br><br>
             <label> r(a) = </label>
             <input type="text" neme="polar-fun" id="polarIn"
                    class="polar-graph-input" placeholder="Например: sin(6t)"/>
@@ -158,19 +165,19 @@
                    class="low-degree" placeholder="0"/>°
             <label> до </label>
             <input type="text" name="to-degree" id="polarUpperBound"
-                   class="high-degree" placeholder="360"/>°<br>
+                   class="high-degree" placeholder="360"/>°<br><br>
 
             <p><button id = 'DrawPolarGraph' onclick='drawPolarGraph()'>Построить</button></p>
             <canvas id="canvas2dPolar" height="0" width="0"></canvas>
         </div>
 
         <div id="implicity">
-            <h3>Функция в неявном виде </h3><br>
+            <h3>Функция в неявном виде </h3><br><br>
 
             <input type="text" name="implicity-fun" id="implicitIn"
-                   class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br>
+                   class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br><br>
 
-            <h3>Задайте диапазон значений по осям</h3><br>
+            <h3>Задайте диапазон значений по осям</h3><br><br>
 
             <div class="coordinates-range">
 
@@ -201,7 +208,7 @@
         </div>
 
         <div id="parametr">
-            <h3>Функция в параметрическом виде </h3><br>
+            <h3>Функция в параметрическом виде </h3><br><br>
             <label> x(t) = </label>
             <input type="text" name="parametr-fun-x" id="parametricInX"
                    class="parametr-graph-input" placeholder="Например: t - 2sin(t)"/><br><br>
@@ -221,11 +228,13 @@
         </div>
     </div>
 </div>
+<br><br>
 
 <div id="prompt">
     <h2>
         Таблица обозначений
     </h2>
+    <br><br>
     <table>
         <tr>
             <th>Число пи (3,14...)</th>
