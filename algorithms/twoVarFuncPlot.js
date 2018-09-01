@@ -55,6 +55,18 @@ function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
 
     surfacePlot(arr, min, max, a, b, c, d, autoZ);
     isolinesPlot(arr, min, max, a, b, c, d);
+
+    rotateRight = () => {
+        gamma += pi / 10;
+        if (gamma > 2 * pi) gamma -= 2 * pi;
+        surfacePlot(arr, min, max, a, b, c, d, autoZ);
+    }
+
+    rotateLeft = () => {
+        gamma -= pi / 10;
+        if (gamma < 0) gamma += 2 * pi;
+        surfacePlot(arr, min, max, a, b, c, d, autoZ);
+    }
 }
 
 let alpha = 0, beta = 0, gamma = 0;
@@ -86,15 +98,9 @@ function getCoordinatesConverter(max, min, a, b, c, d) {
     }
 }
 
-function rotateRight() {
-    gamma += pi / 10;
-    if (gamma > 2 * pi) gamma -= 2 * pi;
-}
 
-function rotateLeft() {
-    gamma -= pi / 10;
-    if (gamma < 0) gamma += 2 * pi;
-}
+let rotateRight = () => {}
+let rotateLeft = () => {}
 
 function getColorizer(min, max) {
     const k = Math.abs(max - min) / 5;
@@ -291,6 +297,9 @@ function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
 
     const toCanvasCoordinates = getCoordinatesConverter(max, min, a, b, c, d);
 
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 0.05;
+
     if (gamma >= 0 && gamma < pi) {
         for (let x = 0; x < arr.length - 1; x++) {
             for (let y = 0; y < arr[0].length - 1; y++) {
@@ -303,8 +312,6 @@ function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
                     ctx.fillStyle = heightToColor(z);
                     validPoints.forEach(elem => ctx.lineTo(offsetX + elem.x, offsetY - elem.y));
                     ctx.fill();
-                    ctx.lineWidth = 0.05;
-                    ctx.strokeStyle = 'black';
                     ctx.stroke();
                     ctx.closePath();
                 }
@@ -322,8 +329,6 @@ function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
                     ctx.fillStyle = heightToColor(z);
                     validPoints.forEach(elem => ctx.lineTo(offsetX + elem.x, offsetY - elem.y));
                     ctx.fill();
-                    ctx.lineWidth = 0.05;
-                    ctx.strokeStyle = 'black';
                     ctx.stroke();
                     ctx.closePath();
                 }
