@@ -148,17 +148,20 @@
             </div>
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
+
+            <p><button id = 'rotateLeft' onclick='rotateLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
+                <button id = 'rotateRight' onclick='rotateRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p>
+
+
             <canvas id="canvas2dFmp" height="0" width="0"></canvas>
             <canvas id="canvasIsolines" height="0" width="0"></canvas>
-            
-            <p><button id = 'ReturnLeft' onclick='returnLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
-               <button id = 'ReturnRight' onclick='returnRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p>
+
         </div>
         <div id="polar">
 
             <h3>Функция в полярных координатах </h3><br><br>
             <label> r(a) = </label>
-            <input type="text" neme="polar-fun" id="polarIn"
+            <input type="text" name="polar-fun" id="polarIn"
                    class="polar-graph-input" placeholder="Например: sin(6t)"/>
             <label>,где а в градусах от </label>
             <input type="text" name="from-degree" id="polarLowerBound"
@@ -212,7 +215,7 @@
             <label> x(t) = </label>
             <input type="text" name="parametr-fun-x" id="parametricInX"
                    class="parametr-graph-input" placeholder="Например: t - 2sin(t)"/><br><br>
-            <lable> y(t) = </lable>
+            <label> y(t) = </label>
             <input type="text" name="parametr-fun-y" id="parametricInY"
                    class="parametr-graph-input" placeholder="Например: 5 - 5cos(t)"/>
             <label>,где t от </label>
@@ -234,7 +237,7 @@
     <h2>
         Таблица обозначений
     </h2>
-    <br><br>
+    <br>
     <table>
         <tr>
             <th>Число пи (3,14...)</th>
