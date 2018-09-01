@@ -49,12 +49,12 @@ class ImplicitMarchingSquare {
 
     findStartPoint() {
         for (; this.i < this.arr.length - 1; this.i++) {
-            this.j %= (this.arr.length - 1);
+            this.j %= (this.arr[0].length - 1);
             if (this.j === 0) {
                 this.j = 1;
                 this.i++;
             }
-            for (; this.j < this.arr.length - 1; this.j++) {
+            for (; this.j < this.arr[0].length - 1; this.j++) {
                 if (this.arr[this.i][this.j].z <= this.h ||
                     (this.arr[this.i][this.j].z > this.h &&
                         (this.arr[this.i - 1][this.j - 1].z <= this.h ||
@@ -78,7 +78,7 @@ class ImplicitMarchingSquare {
             this.moveNext(x, y);
 
             if (x !== this.x0 || y !== this.y0) {
-                if (x === 0 || y === 0 || x === this.arr.length - 1 || y === this.arr.length - 1) {
+                if (x === 0 || y === 0 || x === this.arr.length - 1 || y === this.arr[0].length - 1) {
                     border++;
                     if (border === 2) {
                         this.borderFound = false;
@@ -93,7 +93,7 @@ class ImplicitMarchingSquare {
                 }
             }
 
-            if (x > 0 && x < this.arr.length && y > 0 && y < this.arr.length) {
+            if (x > 0 && x < this.arr.length && y > 0 && y < this.arr[0].length) {
                 let X, Y;
                 switch (this.nextStep) {
                     case this.UP:
@@ -147,7 +147,7 @@ class ImplicitMarchingSquare {
     }
 
     check(x, y) {
-        if (x < 0 || y < 0 || x >= this.arr.length || y >= this.arr.length) return false;
+        if (x < 0 || y < 0 || x >= this.arr.length || y >= this.arr[0].length) return false;
         return this.arr[x][y].z <= this.h;
     }
 
@@ -234,25 +234,27 @@ class MarchingSquare {
         this.x0 = 0;
         this.y0 = 0;
 
+        this.N = Math.max(arr.length, arr[0].length);
+
         this.checkedPoints = checkedPoints;
     }
 
     findStartPoint() {
         for (; this.i < this.arr.length - 1; this.i++) {
-            this.j %= (this.arr.length - 1);
+            this.j %= (this.arr[0].length - 1);
             if (this.j === 0) {
                 this.j = 1;
                 this.i++;
             }
-            for (; this.j < this.arr.length - 1; this.j++) {
+            for (; this.j < this.arr[0].length - 1; this.j++) {
                 if ((this.arr[this.i][this.j].z <= this.h ||
                         (this.arr[this.i][this.j].z > this.h &&
                             (this.arr[this.i - 1][this.j - 1].z <= this.h ||
                                 this.arr[this.i - 1][this.j].z <= this.h || this.arr[this.i][this.j - 1].z <= this.h))) &&
-                    !this.checkedPoints.has(this.i * this.arr.length + this.j)) {
+                    !this.checkedPoints.has(this.i * this.N + this.j)) {
                     this.x0 = this.i;
                     this.y0 = this.j;
-                    this.checkedPoints.add(this.i * this.arr.length + this.j);
+                    this.checkedPoints.add(this.i * this.N + this.j);
                     this.j++;
                     return true;
                 }
@@ -271,7 +273,7 @@ class MarchingSquare {
             this.moveNext(x, y);
 
             if (x !== this.x0 || y !== this.y0) {
-                if (x === 0 || y === 0 || x === this.arr.length - 1 || y === this.arr.length - 1) {
+                if (x === 0 || y === 0 || x === this.arr.length - 1 || y === this.arr[0].length - 1) {
                     border++;
                     if (border === 2) {
                         this.borderFound = false;
@@ -285,8 +287,8 @@ class MarchingSquare {
                     continue;
                 }
             }
-            this.checkedPoints.add(x * this.arr.length + y);
-            if (x > 0 && x < this.arr.length && y > 0 && y < this.arr.length) {
+            this.checkedPoints.add(x * this.N + y);
+            if (x > 0 && x < this.arr.length && y > 0 && y < this.arr[0].length) {
                 let X, Y;
                 switch (this.nextStep) {
                     case this.UP:
@@ -344,7 +346,7 @@ class MarchingSquare {
     }
 
     check(x, y) {
-        if (x < 0 || y < 0 || x >= this.arr.length || y >= this.arr.length) return false;
+        if (x < 0 || y < 0 || x >= this.arr.length || y >= this.arr[0].length) return false;
         return this.arr[x][y].z <= this.h;
     }
 

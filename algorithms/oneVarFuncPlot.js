@@ -19,7 +19,7 @@ let funcs = functionsFromString('sin(x)'); //Когда нибудь здесь 
 
 function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
     const canvas = document.getElementById('canvas2dUsually');
-    funcs = functionsFromString(input);
+    const funcs = functionsFromString(input);
     const a = leftBorder;
     const b = rightBorder;
 
@@ -40,12 +40,16 @@ function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBord
         return;
     }
     const pointSets = [];
+
     for (let func of funcs) {
-        pointSets.push(getPoints(func, a, b, auto, botBorder, upBorder));
+        pointSets.push(getPoints(func, a, b, 10, 0.01, auto, botBorder, upBorder));
     }
+
     const c = !auto ? botBorder : min;
     const d = !auto ? upBorder : max;
+
     gridPlot(canvas, offset, a, b, c, d, getXScale(offset, a, b), getYScale(offset, max, min, auto));
+
     for (let i = 0; i < pointSets.length; i++) {
         plot(pointSets[i], colors[i], a, b, offset, auto, c, d);
     }
@@ -102,7 +106,7 @@ function quadratureSecond(f1, f2, f3, f4) {
 }
 
 
-function getPointsSet(func, a, b, depth, epsilon, resultSet, afterRefinement = false) {
+function getPointsSet(func, a, b, depth, epsilon, resultSet, afterRefinement = false, singularities) {
 
     const m = (a + b) / 2;
 
@@ -164,8 +168,8 @@ function getPointsSet(func, a, b, depth, epsilon, resultSet, afterRefinement = f
         }
     }
 
-    getPointsSet(func, a, m, depth - 1, epsilon * 2, resultSet, afterRefinement);
-    getPointsSet(func, m, b, depth - 1, epsilon * 2, resultSet, afterRefinement);
+    getPointsSet(func, a, m, depth - 1, epsilon * 2, resultSet, afterRefinement, singularities);
+    getPointsSet(func, m, b, depth - 1, epsilon * 2, resultSet, afterRefinement, singularities);
 }
 
 function checkSmoothness(a, b, c) {
@@ -182,15 +186,24 @@ function checkCurve(a, b, c) {
 }
 
 
-function getPoints(func, a, b, autoY = true, c, d) {
+function getPoints(func, a, b, accuracy, eps, autoY = true, c, d) {
+
 
     const delta = Math.min((b - a) / 150, 1);
-    const N = delta * 150 === b - a ? 150 : b - a;
+    const N = abs(delta * 150 - (b - a)) < 0.0001 ? 150 : Math.ceil(b - a);
+
 
     const pointSet = new Set();
+    const singularities = [];
+
+    upAsympto = false;
+    downAsympto = false;
+
+    max = -Infinity;
+    min = Infinity;
 
     for (let i = 1; i <= N; i++) {
-        getPointsSet(func, a + (i - 1) * delta, a + i * delta, 10, 0.01, pointSet);
+        getPointsSet(func, a + (i - 1) * delta, a + i * delta, accuracy, eps, pointSet, false, singularities);
     }
 
     if (autoY) {
@@ -207,7 +220,6 @@ function getPoints(func, a, b, autoY = true, c, d) {
 
     let top = Math.max(abs(max), abs(min));
 
-    //const oldMin = min;
     if (autoY && upAsympto && downAsympto) {
         max = abs(top);
         min = -abs(top);
@@ -215,10 +227,8 @@ function getPoints(func, a, b, autoY = true, c, d) {
 
     if (singularities.length > 0) { // Если асимптоты таки есть у нас
 
-        console.log(downAsympto, upAsympto);
-
         for (let i = 0; i < singularities.length; i++) {
-            getPointsSet(func, singularities[i].a, singularities[i].b, 10, singularities[i].epsilon, pointSet, true);
+            getPointsSet(func, singularities[i].a, singularities[i].b, accuracy, singularities[i].epsilon, pointSet, true);
         }
     }
 
@@ -236,11 +246,8 @@ function plot(pointSet, color = 'black', a, b, offset, autoY = true, c, d) {
 
     ctx.beginPath();
 
-    console.log('maxmin', max, min);
-
 
     const pointArr = [...pointSet].sort((a, b) => a.x - b.x);
-    console.log('kek', min, downAsympto, upAsympto);
 
     const xScale = getXScale(offset, a, b);
     const yScale = getYScale(offset, d, c, autoY);
@@ -253,7 +260,6 @@ function plot(pointSet, color = 'black', a, b, offset, autoY = true, c, d) {
             continue;
         }
         if (pointArr[i].y > max || pointArr[i].y < min) {
-            //ctx.lineTo(offset + (pointArr[i].x - a) * xScale, (canvSize - offset) - (pointArr[i].y - oldMin) * yScale);
             ctx.lineTo(offset + (pointArr[i].x - a) * xScale, (canvSize - offset) - (pointArr[i].y - min) * yScale);
             ctx.stroke();
             ctx.closePath();

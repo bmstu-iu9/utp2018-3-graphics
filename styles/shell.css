@@ -61,7 +61,7 @@ th {
 }
 .abscissa-usually, .ordinate-usually,
 .abscissa-fmp, .ordinate-fmp, .applicate-fmp,
-.abscissa-implicity, ordinate-implicity, .applicate-implicity,
+.abscissa-implicity, .ordinate-implicity, .applicate-implicity,
 .abscissa-parametr, .ordinate-parametr {
     font-family: 'Pacifico', cursive;
     margin: 0;

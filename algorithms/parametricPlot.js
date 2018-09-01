@@ -35,7 +35,7 @@ function startParametric(xString, yString, t0, t1, isPolar = false) {
 
 function startPolar(rString, t0, t1) {
     const parametricFuncs = polarToParametricFunc(rString);
-    startParametric(parametricFuncs[0], parametricFuncs[1], t0*pi/180, t1*pi/180, true);
+    startParametric(parametricFuncs[0], parametricFuncs[1], t0*Math.PI/180, t1*Math.PI/180, true);
 }
 
 
@@ -43,47 +43,64 @@ function parametricPlot(fX, fY, t0, t1, canvas) {
 
     const ctx = canvas.getContext('2d');
 
-    const canvasSize = canvas.height;
-
-    const n = 10000;
-    const dt = (t1 - t0) / n;
     const offset = 50;
 
-    const pointSet = new Set();
+    const pointsX = [...getPoints(fX, t0, t1, 9, 0.00001)].sort((a, b) => a.x - b.x);
+    const a = min;
+    const b = max;
+    const pointsY = [...getPoints(fY, t0, t1, 9, 0.00001)].sort((a, b) => a.x - b.x);
+    const c = min;
+    const d = max;
 
-    let minX = Infinity, minY = Infinity;
-    let maxX = -Infinity, maxY = -Infinity;
 
-    for (let t = t0; t <= t1; t+=dt) {
+    const xScale = (canvas.width - offset) / abs(b - a);
+    const yScale = (canvas.height - offset) / abs(d - c);
 
-        const x = fX(t);
-        const y = fY(t);
+    gridPlot(canvas, offset, a, b, c, d, xScale, yScale);
 
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
-
-        pointSet.add(new Point2D(x, y));
-    }
-
-    const xScale = (canvasSize - offset) / abs(maxX - minX);
-    const yScale = (canvasSize - offset) / abs(maxY - minY);
-
-    gridPlot(canvas, offset, minX, maxX, minY, maxY, xScale, yScale);
-
-    const points = [...pointSet];
 
     ctx.beginPath();
 
     ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 0.75;
 
-    for (let elem of points) {
-        ctx.lineTo(offset + (elem.x - minX) * xScale, (canvasSize - offset) - (elem.y - minY) * yScale);
+    let i = 0, j = 0;
+    while (i < pointsX.length && j < pointsY.length) {
+        if (pointsX[i].x < pointsY[j].x) {
+            const pt = new Point2D(pointsX[i].x, fX(pointsX[i].x));
+            if (isFinite(pt.y) && isFinite(pointsY[j].y)) {
+                ctx.lineTo(offset + (pt.y - a) * xScale, (canvas.height - offset) - (pointsY[j].y - c) * yScale);
+            } else {
+                ctx.stroke();
+                ctx.closePath();
+                ctx.beginPath();
+            }
+            i++;
+        } else if (pointsX[i].x > pointsY[j].x) {
+            const pt = new Point2D(pointsY[j].x, fY(pointsY[j].x));
+            if (isFinite(pt.y) && isFinite(pointsX[i].y)) {
+                ctx.lineTo(offset + (pointsX[i].y - a) * xScale, (canvas.height - offset) - (pt.y - c) * yScale);
+            } else {
+                ctx.stroke();
+                ctx.closePath();
+                ctx.beginPath();
+            }
+            j++;
+        } else {
+            if (isFinite(pointsX[i].y) && isFinite(pointsY[j].y)) {
+                ctx.lineTo(offset + (pointsX[i].y - a) * xScale, (canvas.height - offset) - (pointsY[j].y - c) * yScale);
+            } else {
+                ctx.stroke();
+                ctx.closePath();
+                ctx.beginPath();
+            }
+            i++;
+            j++;
+        }
     }
 
     ctx.stroke();
     ctx.closePath();
 
-    markAxis(canvas, offset, minX, maxX, minY, maxY);
+    markAxis(canvas, offset, a, b, c, d);
 }

@@ -46,7 +46,7 @@
 
 <div class="functions">
     <h2>Выберете тип функции</h2>
-    
+
     <div id="links">
         <a href="#usually">Функция одного переменного </a><br>
         <a href="#fmp">Функция двух переменных </a><br>
@@ -93,7 +93,7 @@
             </div>
 
             <p><button id = 'DrawUsuallyGraph' onclick='drawUsuallyGraph()'>Построить</button></p>
-            <canvas id="canvas2dUsually" ></canvas>
+            <canvas id="canvas2dUsually" height="0" width="0"></canvas>
         </div>
 
         <div id="fmp">
@@ -144,8 +144,8 @@
             </div>
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
-            <canvas id="canvas2dFmp" ></canvas>
-            <canvas id="canvasIsolines"></canvas>
+            <canvas id="canvas2dFmp" height="0" width="0"></canvas>
+            <canvas id="canvasIsolines" height="0" width="0"></canvas>
         </div>
         <div id="polar">
 
@@ -161,7 +161,7 @@
                    class="high-degree" placeholder="360"/>°<br>
 
             <p><button id = 'DrawPolarGraph' onclick='drawPolarGraph()'>Построить</button></p>
-            <canvas id="canvas2dPolar" ></canvas>
+            <canvas id="canvas2dPolar" height="0" width="0"></canvas>
         </div>
 
         <div id="implicity">
@@ -194,19 +194,10 @@
                            class="high-ordinate" placeholder="10"/>
                 </div><br>
 
-                <div class="applicate-implicity" id="applicate-implicity">
-                    <h3>Ось Oz: </h3>
-                    <label>интервал: от </label>
-                    <input type="text" name="from-applicate"
-                           class="low-applicate" placeholder="-10"/>
-                    <label> до </label>
-                    <input type="text" name="to-applicate"
-                           class="high-applicate" placeholder="10"/>
-                </div>
             </div>
 
             <p><button id = 'DrawImplicityGraph' onclick='drawImplicityGraph()'>Построить</button></p>
-            <canvas id="canvas2dImplicity" ></canvas>
+            <canvas id="canvas2dImplicity" height="0" width="0"></canvas>
         </div>
 
         <div id="parametr">
@@ -225,38 +216,8 @@
                    class="high-parametr" placeholder="5"/><br>
             <br>
 
-            <h3>Задайте диапазон значений по осям</h3><br>
-
-            <div class="coordinates-range">
-
-                <div class='abscissa-parametr' id="abscissa-parametr">
-                    <h3>Ось Ox: </h3>
-                    <label>интервал: от </label>
-                    <input type="text" name="from-abscissa"
-                           class="low-abscissa" placeholder="-10"/>
-                    <label> до </label>
-                    <input type="text" name="to-abscissa"
-                           class="high-abscissa" placeholder="10"/>
-                </div><br>
-
-                <div class="ordinate-parametr" id="ordinate-parametr">
-                    <h3>Ось Oy: </h3>
-                    <label>интервал: от </label>
-                    <input type="text" name="from-ordinate"
-                           class="low-ordinate" placeholder="-10"/>
-                    <label> до </label>
-                    <input type="text" name="to-ordinate"
-                           class="high-ordinate" placeholder="10"/>
-                    <label for="RangeAvtoc">
-                        <input type="checkbox" checked="checked" id="RangeAvtoc" name="RangeAvto"/>
-                        авто
-                    </label>
-                </div>
-
-            </div>
-
             <p><button id = 'DrawParametrGraph' onclick='drawParametrGraph()'>Построить</button></p>
-            <canvas id="canvas2dParametr" ></canvas>
+            <canvas id="canvas2dParametr" height="0" width="0"></canvas>
         </div>
     </div>
 </div>
