@@ -63,13 +63,13 @@ function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
 
     rotateRight = () => {
         gamma += pi / 10;
-        if (gamma > 2 * pi) gamma -= 2 * pi;
+        if (gamma >= 2 * pi) gamma = 0;
         surfacePlot(arr, min, max, a, b, c, d, autoZ);
     }
 
     rotateLeft = () => {
         gamma -= pi / 10;
-        if (gamma < 0) gamma += 2 * pi;
+        if (gamma <= 0) gamma = 2 * pi;
         surfacePlot(arr, min, max, a, b, c, d, autoZ);
     }
 }
@@ -304,8 +304,9 @@ function surfacePlot(arr, min, max, a, b, c, d, autoZ) {
 
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 0.05;
+    
 
-    if (gamma >= 0 && gamma < pi) {
+    if (gamma >= 0 && gamma < pi || gamma == 2*pi) {
         for (let x = 0; x < arr.length - 1; x++) {
             for (let y = 0; y < arr[0].length - 1; y++) {
                 let validPoints = [arr[x][y], arr[x + 1][y], arr[x + 1][y + 1], arr[x][y + 1]]
