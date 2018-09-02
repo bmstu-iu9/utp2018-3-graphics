@@ -49,6 +49,9 @@ function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBord
     const offset = 50;
     const pointSets = [];
 
+    max = -Infinity;
+    min = Infinity;
+
     for (let func of funcs) {
         pointSets.push(getPoints(func, a, b, 10, 0.01, auto, botBorder, upBorder));
     }
@@ -206,9 +209,6 @@ function getPoints(func, a, b, accuracy, eps, autoY = true, c, d) {
 
     upAsympto = false;
     downAsympto = false;
-
-    max = -Infinity;
-    min = Infinity;
 
     for (let i = 1; i <= N; i++) {
         getPointsSet(func, a + (i - 1) * delta, a + i * delta, accuracy, eps, pointSet, false, singularities);
