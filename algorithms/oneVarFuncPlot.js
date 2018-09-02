@@ -15,8 +15,6 @@ function functionsFromString(f) {
                     .map(func => {return (x) => eval(func)});
 }
 
-let funcs = functionsFromString('sin(x)'); //Когда нибудь здесь будет пользовательский ввод, возможно
-
 function checkInputOneVar(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
     const funcs = functionsFromString(input);
     if (rightBorder <= leftBorder || (upBorder <= botBorder && !auto)) {

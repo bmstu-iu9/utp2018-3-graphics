@@ -56,9 +56,15 @@ function parametricPlot(fX, fY, t0, t1, canvas) {
 
     const offset = 50;
 
+    max = -Infinity;
+    min = Infinity;
+
     const pointsX = [...getPoints(fX, t0, t1, 9, 0.00001)].sort((a, b) => a.x - b.x);
     const a = min;
     const b = max;
+
+    max = -Infinity;
+    min = Infinity;
     const pointsY = [...getPoints(fY, t0, t1, 9, 0.00001)].sort((a, b) => a.x - b.x);
     const c = min;
     const d = max;
