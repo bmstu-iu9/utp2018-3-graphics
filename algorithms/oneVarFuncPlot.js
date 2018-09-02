@@ -17,19 +17,15 @@ function functionsFromString(f) {
 
 let funcs = functionsFromString('sin(x)'); //Когда нибудь здесь будет пользовательский ввод, возможно
 
-function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
-    const canvas = document.getElementById('canvas2dUsually');
+function checkInputOneVar(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
     const funcs = functionsFromString(input);
-    const a = leftBorder;
-    const b = rightBorder;
-
-    const offset = 50;
     if (rightBorder <= leftBorder || (upBorder <= botBorder && !auto)) {
-        alert('Неверно заданы отрезки');
-        return;
+        alert('Неверно заданы интервалы');
+        return null;
     }
     if (funcs.length > 5) {
-        alert('Максимальное число функций - 5');
+        alert('Можно задать не более 5 функций одновременно');
+        return null;
     }
     try {
         for (let func of funcs) {
@@ -37,8 +33,20 @@ function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBord
         }
     } catch (e) {
         alert('Проверьте корректность введенных данных и попробуйте снова');
-        return;
+        return null;
     }
+
+    return true;
+
+}
+
+function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
+    const canvas = document.getElementById('canvas2dUsually');
+    const funcs = functionsFromString(input);
+    const a = leftBorder;
+    const b = rightBorder;
+
+    const offset = 50;
     const pointSets = [];
 
     for (let func of funcs) {

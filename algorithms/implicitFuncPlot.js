@@ -5,15 +5,35 @@ let height = 0;
 function implicitFuncFromString(funcString) {
     funcString = funcString.replace(/\^/g, '**');
     let i = 0;
-    while (funcString[i] !== '=') i++;
-    height = eval(funcString.substring(i + 1));
+    while (i < funcString.length && funcString[i] !== '=') i++;
+    heightValue = eval(funcString.substring(i + 1));
+    if (!isFinite(heightValue)) {
+        return null;
+    }
+    height = heightValue;
     funcString = funcString.substring(0, i);
     return (x, y) => eval(funcString);
 }
 
 
+function checkInputImplicit(funcIn, a1, a2, a3, a4) {
+    if (a2 <= a1 || a4 <= a3) {
+        alert('Неверно заданы интервалы');
+        return null;
+    }
+
+    try {
+        const f = implicitFuncFromString(funcIn);
+        f(0, 0);
+    } catch (e) {
+        alert('Проверьте корректность введенных данных и попробуйте снова');
+        return null;
+    }
+
+    return true;
+}
+
 function startImpl(funcIn, a1, a2, a3, a4) {
-    const f = implicitFuncFromString(funcIn);
 
     const arr = [];
     const n = 200;
@@ -32,18 +52,6 @@ function startImpl(funcIn, a1, a2, a3, a4) {
         for (let j = c, jdx = 0; j <= d; j += dy, jdx++) {
             arr[idx].push(new Point3D(i, j, f(i, j)));
         }
-    }
-
-    if (a2 <= a1 || a4 <= a3) {
-        alert('Неверно заданы отрезки');
-        return;
-    }
-
-    try {
-        f(0, 0);
-    } catch (e) {
-        alert('Проверьте корректность введенных данных и попробуйте снова');
-        return;
     }
     implicitPlot(arr, a, b, c, d, offset);
 }

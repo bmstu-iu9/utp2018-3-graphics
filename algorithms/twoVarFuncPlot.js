@@ -5,18 +5,23 @@ function funcFromString(f) {
     return (x, y) => eval(f);
 }
 
-function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
+function checkInputTwoVar(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
     const f = funcFromString(funcIn);
     if (a2 <= a1 || a4 <= a3 || (!autoZ && z1 <= z0)) {
-        alert('Неверно заданы отрезки');
-        return;
+        alert('Неверно заданы интервалы');
+        return null;
     }
     try {
         f(0, 0);
     } catch(error) {
         alert('Проверьте корректность введенных данных и попробуйте снова.');
-        return;
+        return null;
     }
+    return true;
+}
+
+function start(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
+    const f = funcFromString(funcIn);
 
     const a = a1;
     const b = a2;

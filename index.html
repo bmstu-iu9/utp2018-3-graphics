@@ -67,7 +67,7 @@
             <input type="text" name="usually-fun"
                    class="usually-graph-input" id="oneVarIn" placeholder="Например: x^3 + 5x -6"/><br><br>
 
-            <h3>Задайте диапазон значений по осям</h3><br><br>
+            <h3>Задайте диапазон значений по осям</h3><br>
 
             <div class="coordinates-range">
                 <div class='abscissa-usually' id="abscissa-usually">
@@ -107,7 +107,7 @@
             <input type="text" name="fmp-fun" id="twoVarIn"
                    class="fmp-graph-input" placeholder="Например: x^2 + y^2"/><br><br>
 
-            <h3>Задайте диапазон значений по осям</h3><br><br>
+            <h3>Задайте диапазон значений по осям</h3><br>
 
             <div class="coordinates-range">
 
@@ -180,7 +180,7 @@
             <input type="text" name="implicity-fun" id="implicitIn"
                    class="implicity-graph-input" placeholder="Например: x^2 + y^2 = 25 "/><br><br>
 
-            <h3>Задайте диапазон значений по осям</h3><br><br>
+            <h3>Задайте диапазон значений по осям</h3><br>
 
             <div class="coordinates-range">
 
@@ -328,35 +328,34 @@
 
 <script>
     function drawUsuallyGraph() {
-        let canvas = document.getElementById('canvas2dUsually');
-        let context = canvas.getContext('2d');
-
-        canvas.width = 650;
-        canvas.height = 650;
+        const canvas = document.getElementById('canvas2dUsually');
 
         const funcInput = document.getElementById('oneVarIn').value;
         const a = document.getElementById('aBoundOneVar').value;
         const b = document.getElementById('bBoundOneVar').value;
         const c = document.getElementById('cBoundOneVar').value;
         const d = document.getElementById('dBoundOneVar').value;
-        const auto = document.getElementById('RangeAvto');
-        if (auto.checked == true) {
-        buildAll(funcInput, eval(a), eval(b));
+        const auto = document.getElementById('RangeAvto').checked;
+
+        if (auto) {
+            if (checkInputOneVar(funcInput, eval(a), eval(b))) {
+                canvas.width = 650;
+                canvas.height = 650;
+                buildAll(funcInput, eval(a), eval(b));
+            }
         } else {
-          buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
+            if (checkInputOneVar(funcInput, eval(a), eval(b), false, eval(c), eval(d))) {
+                canvas.width = 650;
+                canvas.height = 650;
+                buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
+            }
         }
     }
 
     function drawFmpGraph() {
         const canvas3d = document.getElementById('canvas2dFmp');
 
-        canvas3d.width = 650;
-        canvas3d.height = 650;
-
         const canvasIsolines = document.getElementById('canvasIsolines');
-
-        canvasIsolines.width = 650;
-        canvasIsolines.height = 650;
 
         const funcInput = document.getElementById('twoVarIn').value;
 
@@ -369,9 +368,21 @@
         const z1 = document.getElementById('z1Bound').value;
 
         if (auto) {
-            start(funcInput, eval(a), eval(b), eval(c), eval(d));
+            if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d))) {
+                canvas3d.width = 650;
+                canvas3d.height = 650;
+                canvasIsolines.width = 650;
+                canvasIsolines.height = 650;
+                start(funcInput, eval(a), eval(b), eval(c), eval(d));
+            }
         } else {
-            start(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1));
+            if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1))) {
+                canvas3d.width = 650;
+                canvas3d.height = 650;
+                canvasIsolines.width = 650;
+                canvasIsolines.height = 650;
+                start(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1));
+            }
         }
 
     }
@@ -379,21 +390,19 @@
     function drawPolarGraph() {
         const canvas = document.getElementById('canvas2dPolar');
 
-        canvas.width = 650;
-        canvas.height = 650;
-
         const t0 = document.getElementById('polarLowerBound').value;
         const t1 = document.getElementById('polarUpperBound').value;
         const funcInput = document.getElementById('polarIn').value;
 
-        startPolar(funcInput, eval(t0), eval(t1));
+        if (checkInputPolar(funcInput, eval(t0), eval(t1))) {
+            canvas.width = 650;
+            canvas.height = 650;
+            startPolar(funcInput, eval(t0), eval(t1));
+        }
     }
 
     function drawImplicityGraph() {
         const canvas = document.getElementById('canvas2dImplicity');
-
-        canvas.width = 650;
-        canvas.height = 650;
 
         const funcInput = document.getElementById('implicitIn').value;
 
@@ -401,22 +410,27 @@
         const b = document.getElementById('bBoundImpl').value;
         const c = document.getElementById('cBoundImpl').value;
         const d = document.getElementById('dBoundImpl').value;
-        startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
+
+        if (checkInputImplicit(funcInput, eval(a), eval(b), eval(c), eval(d))) {
+            canvas.width = 650;
+            canvas.height = 650;
+            startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
+        }
     }
 
     function drawParametrGraph() {
         const canvas = document.getElementById('canvas2dParametr');
-
-        canvas.width = 650;
-        canvas.height = 650;
 
         const t0 = document.getElementById('parametricLowerBound').value;
         const t1 = document.getElementById('parametricUpperBound').value;
         const funcInputX = document.getElementById('parametricInX').value;
         const funcInputY = document.getElementById('parametricInY').value;
 
-
-        startParametric(funcInputX, funcInputY, eval(t0), eval(t1));
+        if (checkInputParametric(funcInputX, funcInputY, eval(t0), eval(t1))) {
+            canvas.width = 650;
+            canvas.height = 650;
+            startParametric(funcInputX, funcInputY, eval(t0), eval(t1));
+        }
 
     }
 </script>

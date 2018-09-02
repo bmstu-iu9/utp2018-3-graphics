@@ -9,23 +9,34 @@ function polarToParametricFunc(r) {
     return['(' + r + ')*cos(t)', '(' + r + ')*sin(t)'];
 }
 
-
-function startParametric(xString, yString, t0, t1, isPolar = false) {
-
+function checkInputParametric(xString, yString, t0, t1) {
     const fX = parametricFuncFromString(xString);
     const fY = parametricFuncFromString(yString);
 
     if (t1 <= t0) {
-        alert('Неверно задан отрезок');
-        return;
+        alert('Неверно задан интервал');
+        return null;
     }
     try {
         fX(0);
         fY(0);
     } catch (e) {
         alert('Проверьте корректность введенных данных и попробуйте снова');
-        return;
+        return null;
     }
+    return true;
+}
+
+function checkInputPolar(rString, t0, t1) {
+    const parametricFuncs = polarToParametricFunc(rString);
+    return checkInputParametric(parametricFuncs[0], parametricFuncs[1], t0*Math.PI/180, t1*Math.PI/180);
+}
+
+function startParametric(xString, yString, t0, t1, isPolar = false) {
+
+    const fX = parametricFuncFromString(xString);
+    const fY = parametricFuncFromString(yString);
+
     if (isPolar) {
         parametricPlot(fX, fY, t0, t1, document.getElementById('canvas2dPolar'));
     } else {
