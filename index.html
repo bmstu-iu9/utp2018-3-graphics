@@ -149,13 +149,6 @@
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
 
-           <!-- <p><button id = 'rotateLeft' onclick='rotateLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
-                <button id = 'rotateRight' onclick='rotateRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p> -->
-
-
-          <!--  <canvas id="canvas2dFmp" height="0" width="0"></canvas>
-            <canvas id="canvasIsolines" height="0" width="0"></canvas> -->
-
         </div>
         <div id="polar">
 
@@ -353,9 +346,6 @@
     }
 
     function drawFmpGraph() {
-       // const canvas3d = document.getElementById('canvas2dFmp');
-
-        //const canvasIsolines = document.getElementById('canvasIsolines');
 
         const funcInput = document.getElementById('twoVarIn').value;
 
@@ -377,7 +367,9 @@
             if (!document.getElementById('canvas2dFmp')) {
 
                 const fmp = document.getElementById('fmp');
-                const par = document.createElement('p');
+                const par = document.createElement('div');
+
+                par.style.paddingLeft = '240px';
 
                 const rotateLeftButton = document.createElement('button');
                 const rotateRightButton = document.createElement('button');
@@ -385,8 +377,8 @@
                 rotateLeftButton.id = 'rotateLeft';
                 rotateRightButton.id = 'rotateRight';
 
-                rotateLeftButton.innerHTML = '<img src="images/arrow_left.jpg" alt="arrow left">';
-                rotateRightButton.innerHTML = '<img src="images/arrow_right.jpg" alt="arrow left">';
+                rotateLeftButton.innerHTML = '<img src="images/arrow_left.png" alt="arrow left">';
+                rotateRightButton.innerHTML = '<img src="images/arrow_right.png" alt="arrow left">';
 
                 const canvas3d = document.createElement('canvas');
                 const canvasIsolines = document.createElement('canvas');
@@ -396,6 +388,8 @@
 
                 par.appendChild(rotateLeftButton);
                 par.appendChild(rotateRightButton);
+
+                rotateRightButton.style.marginLeft = '20px';
 
                 fmp.appendChild(par);
                 fmp.appendChild(canvas3d);
