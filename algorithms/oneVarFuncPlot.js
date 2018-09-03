@@ -15,7 +15,28 @@ function functionsFromString(f) {
                     .map(func => {return (x) => eval(func)});
 }
 
-let funcs = functionsFromString('sin(x)'); //Когда нибудь здесь будет пользовательский ввод, возможно
+function checkInputOneVar(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
+    const funcs = functionsFromString(input);
+    if (rightBorder <= leftBorder || (upBorder <= botBorder && !auto)) {
+        alert('Неверно заданы интервалы');
+        return null;
+    }
+    if (funcs.length > 5) {
+        alert('Можно задать не более 5 функций одновременно');
+        return null;
+    }
+    try {
+        for (let func of funcs) {
+            func(0);
+        }
+    } catch (e) {
+        alert('Проверьте корректность введенных данных и попробуйте снова');
+        return null;
+    }
+
+    return true;
+
+}
 
 function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
     const canvas = document.getElementById('canvas2dUsually');
@@ -24,22 +45,10 @@ function buildAll(input, leftBorder, rightBorder, auto = true, botBorder, upBord
     const b = rightBorder;
 
     const offset = 50;
-    if (rightBorder <= leftBorder || (upBorder <= botBorder && !auto)) {
-        alert('Неверно заданы отрезки');
-        return;
-    }
-    if (funcs.length > 5) {
-        alert('Максимальное число функций - 5');
-    }
-    try {
-        for (let func of funcs) {
-            func(0);
-        }
-    } catch (e) {
-        alert('Проверьте корректность введенных данных и попробуйте снова');
-        return;
-    }
     const pointSets = [];
+
+    max = -Infinity;
+    min = Infinity;
 
     for (let func of funcs) {
         pointSets.push(getPoints(func, a, b, 10, 0.01, auto, botBorder, upBorder));
@@ -198,9 +207,6 @@ function getPoints(func, a, b, accuracy, eps, autoY = true, c, d) {
 
     upAsympto = false;
     downAsympto = false;
-
-    max = -Infinity;
-    min = Infinity;
 
     for (let i = 1; i <= N; i++) {
         getPointsSet(func, a + (i - 1) * delta, a + i * delta, accuracy, eps, pointSet, false, singularities);
