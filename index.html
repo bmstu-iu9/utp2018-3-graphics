@@ -149,12 +149,12 @@
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
 
-            <p><button id = 'rotateLeft' onclick='rotateLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
-                <button id = 'rotateRight' onclick='rotateRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p>
+           <!-- <p><button id = 'rotateLeft' onclick='rotateLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
+                <button id = 'rotateRight' onclick='rotateRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p> -->
 
 
-            <canvas id="canvas2dFmp" height="0" width="0"></canvas>
-            <canvas id="canvasIsolines" height="0" width="0"></canvas>
+          <!--  <canvas id="canvas2dFmp" height="0" width="0"></canvas>
+            <canvas id="canvasIsolines" height="0" width="0"></canvas> -->
 
         </div>
         <div id="polar">
@@ -353,9 +353,9 @@
     }
 
     function drawFmpGraph() {
-        const canvas3d = document.getElementById('canvas2dFmp');
+       // const canvas3d = document.getElementById('canvas2dFmp');
 
-        const canvasIsolines = document.getElementById('canvasIsolines');
+        //const canvasIsolines = document.getElementById('canvasIsolines');
 
         const funcInput = document.getElementById('twoVarIn').value;
 
@@ -367,21 +367,71 @@
         const z0 = document.getElementById('z0Bound').value;
         const z1 = document.getElementById('z1Bound').value;
 
-        if (auto) {
-            if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d))) {
-                canvas3d.width = 650;
-                canvas3d.height = 650;
-                canvasIsolines.width = 650;
-                canvasIsolines.height = 650;
-                start(funcInput, eval(a), eval(b), eval(c), eval(d));
+        if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d))) {
+
+            if (!auto && eval(z1) <= eval(z0)) {
+                alert('Неверно заданы интервалы');
+                return;
             }
-        } else {
-            if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1))) {
+
+            if (!document.getElementById('canvas2dFmp')) {
+
+                const fmp = document.getElementById('fmp');
+                const par = document.createElement('p');
+
+                const rotateLeftButton = document.createElement('button');
+                const rotateRightButton = document.createElement('button');
+
+                rotateLeftButton.id = 'rotateLeft';
+                rotateRightButton.id = 'rotateRight';
+
+                rotateLeftButton.innerHTML = '<img src="images/arrow_left.jpg" alt="arrow left">';
+                rotateRightButton.innerHTML = '<img src="images/arrow_right.jpg" alt="arrow left">';
+
+                const canvas3d = document.createElement('canvas');
+                const canvasIsolines = document.createElement('canvas');
+
+                canvas3d.id = 'canvas2dFmp';
+                canvasIsolines.id = 'canvasIsolines';
+
+                par.appendChild(rotateLeftButton);
+                par.appendChild(rotateRightButton);
+
+                fmp.appendChild(par);
+                fmp.appendChild(canvas3d);
+                fmp.appendChild(canvasIsolines);
+
                 canvas3d.width = 650;
                 canvas3d.height = 650;
+
                 canvasIsolines.width = 650;
                 canvasIsolines.height = 650;
+
+                if (auto) {
+                    start(funcInput, eval(a), eval(b), eval(c), eval(d));
+                } else {
+                    start(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1));
+                }
+
+                rotateLeftButton.onclick = rotateLeft;
+                rotateRightButton.onclick = rotateRight;
+
+            } else if (auto) {
+                const rotateLeftButton = document.getElementById('rotateLeft');
+                const rotateRightButton = document.getElementById('rotateRight');
+
+                start(funcInput, eval(a), eval(b), eval(c), eval(d));
+
+                rotateLeftButton.onclick = rotateLeft;
+                rotateRightButton.onclick = rotateRight;
+            } else {
+                const rotateLeftButton = document.getElementById('rotateLeft');
+                const rotateRightButton = document.getElementById('rotateRight');
+
                 start(funcInput, eval(a), eval(b), eval(c), eval(d), false, eval(z0), eval(z1));
+
+                rotateLeftButton.onclick = rotateLeft;
+                rotateRightButton.onclick = rotateRight;
             }
         }
 
