@@ -6,7 +6,7 @@ function implicitFuncFromString(funcString) {
     funcString = funcString.replace(/\^/g, '**');
     let i = 0;
     while (i < funcString.length && funcString[i] !== '=') i++;
-    heightValue = eval(funcString.substring(i + 1));
+    const heightValue = eval(funcString.substring(i + 1));
     if (!isFinite(heightValue)) {
         return null;
     }
@@ -35,6 +35,7 @@ function checkInputImplicit(funcIn, a1, a2, a3, a4) {
 
 function startImpl(funcIn, a1, a2, a3, a4) {
 
+    const f = implicitFuncFromString(funcIn);
     const arr = [];
     const n = 200;
     const a = a1;
