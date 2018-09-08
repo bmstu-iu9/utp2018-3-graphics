@@ -12,7 +12,7 @@ function functionsFromString(f) {
         }
     }
     return functions.map(func => func.replace(/\^/g, '**'))
-                    .map(func => func.replace(/(\)|\d|x)(\w)/g, '$1*$2'))
+                    .map(func => func.replace(/(\)|\d|x)([a-z]|\()/g, '$1*$2'))
                     .map(func => {return (x) => eval(func)});
 }
 

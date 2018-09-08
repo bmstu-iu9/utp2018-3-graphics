@@ -4,7 +4,7 @@ let height = 0;
 
 function implicitFuncFromString(funcString) {
     funcString = funcString.replace(/\^/g, '**')
-        .replace(/(\)|\d|x|y)(\w)/g, '$1*$2');
+        .replace(/(\)|\d|x|y)([a-z]|\()/g, '$1*$2');
     let i = 0;
     while (i < funcString.length && funcString[i] !== '=') i++;
     const heightValue = eval(funcString.substring(i + 1));

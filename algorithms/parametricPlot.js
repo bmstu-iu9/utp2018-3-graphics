@@ -2,7 +2,7 @@
 
 function parametricFuncFromString(f) {
     f = f.replace(/\^/g, '**')
-        .replace(/(\)|\d|t)(\w)/g, '$1*$2')
+        .replace(/(\)|\d|t)([a-z]|\()/g, '$1*$2')
     return (t) => eval(f);
 }
 

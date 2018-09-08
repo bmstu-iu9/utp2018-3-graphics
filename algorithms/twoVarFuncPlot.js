@@ -2,7 +2,7 @@
 
 function funcFromString(f) {
     f = f.replace(/\^/g, '**')
-        .replace(/(\)|\d|x|y)(\w)/g, '$1*$2');
+        .replace(/(\)|\d|x|y)([a-z]|\()/g, '$1*$2');
     return (x, y) => eval(f);
 }
 
