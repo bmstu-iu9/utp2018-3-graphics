@@ -1,7 +1,8 @@
 'use strict';
 
 function parametricFuncFromString(f) {
-    f = f.replace(/\^/g, '**');
+    f = f.replace(/\^/g, '**')
+        .replace(/(\)|\d|t)(\w)/g, '$1*$2')
     return (t) => eval(f);
 }
 
@@ -10,10 +11,24 @@ function polarToParametricFunc(r) {
 }
 
 function checkInputParametric(xString, yString, t0, t1) {
+    if (xString.length === 0 || yString.length === 0) {
+        alert('Введите функции');
+        return null;
+    }
+
     const fX = parametricFuncFromString(xString);
     const fY = parametricFuncFromString(yString);
 
-    if (t1 <= t0) {
+    try {
+        eval(t0);
+        eval(t1);
+    } catch (e) {
+        alert('Неверно заданы отрезки');
+    }
+
+    const t1Value = eval(t1);
+    const t0Value = eval(t0);
+    if (!isFinite(t0Value) || !isFinite(t1Value) || t1Value <= t0Value) {
         alert('Неверно задан интервал');
         return null;
     }
@@ -28,8 +43,12 @@ function checkInputParametric(xString, yString, t0, t1) {
 }
 
 function checkInputPolar(rString, t0, t1) {
+    if (rString.length === 0) {
+        alert('Введите функцию');
+        return null;
+    }
     const parametricFuncs = polarToParametricFunc(rString);
-    return checkInputParametric(parametricFuncs[0], parametricFuncs[1], t0*Math.PI/180, t1*Math.PI/180);
+    return checkInputParametric(parametricFuncs[0], parametricFuncs[1], t0+'*Math.PI/180', t1+'*Math.PI/180');
 }
 
 function startParametric(xString, yString, t0, t1, isPolar = false) {

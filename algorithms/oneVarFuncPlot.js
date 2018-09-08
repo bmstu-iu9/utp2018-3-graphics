@@ -12,12 +12,34 @@ function functionsFromString(f) {
         }
     }
     return functions.map(func => func.replace(/\^/g, '**'))
+                    .map(func => func.replace(/(\)|\d|x)(\w)/g, '$1*$2'))
                     .map(func => {return (x) => eval(func)});
 }
 
-function checkInputOneVar(input, leftBorder, rightBorder, auto = true, botBorder, upBorder) {
+function checkInputOneVar(input, leftBorderStr, rightBorderStr, auto = true, botBorderStr, upBorderStr) {
+    if (input.length === 0) {
+        alert('Введите хотя бы одну функцию');
+        return null;
+    }
+
     const funcs = functionsFromString(input);
-    if (rightBorder <= leftBorder || (upBorder <= botBorder && !auto)) {
+
+    try {
+        eval(leftBorderStr);
+        eval(rightBorderStr);
+        eval(botBorderStr);
+        eval(upBorderStr);
+    } catch (e) {
+        alert('Неверно заданы интервалы');
+    }
+
+    const rightBorder = eval(rightBorderStr);
+    const leftBorder = eval(leftBorderStr);
+    const upBorder = eval(upBorderStr);
+    const botBorder = eval(botBorderStr);
+
+    if (!isFinite(rightBorder) || !isFinite(leftBorder) ||
+        rightBorder <= leftBorder || (!auto && (!isFinite(upBorder) || !isFinite(botBorder) || upBorder <= botBorder))) {
         alert('Неверно заданы интервалы');
         return null;
     }

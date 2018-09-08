@@ -331,13 +331,13 @@
         const auto = document.getElementById('RangeAvto').checked;
 
         if (auto) {
-            if (checkInputOneVar(funcInput, eval(a), eval(b))) {
+            if (checkInputOneVar(funcInput, a, b)) {
                 canvas.width = 650;
                 canvas.height = 650;
                 buildAll(funcInput, eval(a), eval(b));
             }
         } else {
-            if (checkInputOneVar(funcInput, eval(a), eval(b), false, eval(c), eval(d))) {
+            if (checkInputOneVar(funcInput, a, b, false, c, d)) {
                 canvas.width = 650;
                 canvas.height = 650;
                 buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
@@ -357,12 +357,7 @@
         const z0 = document.getElementById('z0Bound').value;
         const z1 = document.getElementById('z1Bound').value;
 
-        if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d))) {
-
-            if (!auto && eval(z1) <= eval(z0)) {
-                alert('Неверно заданы интервалы');
-                return;
-            }
+        if (checkInputTwoVar(funcInput, a, b, c, d, auto, z0, z1)) {
 
             if (!document.getElementById('canvas2dFmp')) {
 
@@ -438,7 +433,7 @@
         const t1 = document.getElementById('polarUpperBound').value;
         const funcInput = document.getElementById('polarIn').value;
 
-        if (checkInputPolar(funcInput, eval(t0), eval(t1))) {
+        if (checkInputPolar(funcInput, t0, t1)) {
             canvas.width = 650;
             canvas.height = 650;
             startPolar(funcInput, eval(t0), eval(t1));
@@ -455,7 +450,7 @@
         const c = document.getElementById('cBoundImpl').value;
         const d = document.getElementById('dBoundImpl').value;
 
-        if (checkInputImplicit(funcInput, eval(a), eval(b), eval(c), eval(d))) {
+        if (checkInputImplicit(funcInput, a, b, c, d)) {
             canvas.width = 650;
             canvas.height = 650;
             startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
@@ -470,7 +465,7 @@
         const funcInputX = document.getElementById('parametricInX').value;
         const funcInputY = document.getElementById('parametricInY').value;
 
-        if (checkInputParametric(funcInputX, funcInputY, eval(t0), eval(t1))) {
+        if (checkInputParametric(funcInputX, funcInputY, t0, t1)) {
             canvas.width = 650;
             canvas.height = 650;
             startParametric(funcInputX, funcInputY, eval(t0), eval(t1));

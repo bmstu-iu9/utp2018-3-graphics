@@ -3,7 +3,8 @@
 let height = 0;
 
 function implicitFuncFromString(funcString) {
-    funcString = funcString.replace(/\^/g, '**');
+    funcString = funcString.replace(/\^/g, '**')
+        .replace(/(\)|\d|x|y)(\w)/g, '$1*$2');
     let i = 0;
     while (i < funcString.length && funcString[i] !== '=') i++;
     const heightValue = eval(funcString.substring(i + 1));
@@ -16,8 +17,28 @@ function implicitFuncFromString(funcString) {
 }
 
 
-function checkInputImplicit(funcIn, a1, a2, a3, a4) {
-    if (a2 <= a1 || a4 <= a3) {
+function checkInputImplicit(funcIn, a1Str, a2Str, a3Str, a4Str) {
+    if (funcIn.length === 0) {
+        alert('Введите равенство, неявно задающее функцию');
+        return null;
+    }
+    try {
+        eval(a1Str);
+        eval(a2Str);
+        eval(a3Str);
+        eval(a4Str);
+    } catch (e) {
+        alert('Неверно заданы интервалы');
+        return null;
+    }
+
+    const a1 = eval(a1Str);
+    const a2 = eval(a2Str);
+    const a3 = eval(a3Str);
+    const a4 = eval(a4Str);
+
+    if (!isFinite(a2) || !isFinite(a1) || a2 <= a1 ||
+        !isFinite(a3) || !isFinite(a4) || a4 <= a3) {
         alert('Неверно заданы интервалы');
         return null;
     }
