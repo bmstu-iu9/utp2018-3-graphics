@@ -149,13 +149,6 @@
 
             <p><button id = 'DrawFmpGraph' onclick='drawFmpGraph()'>Построить</button></p>
 
-           <!-- <p><button id = 'rotateLeft' onclick='rotateLeft()'><img src="images/arrow_left.jpg" alt="arrow left"></button>
-                <button id = 'rotateRight' onclick='rotateRight()'><img src="images/arrow_right.jpg" alt="arrow right"></button></p> -->
-
-
-          <!--  <canvas id="canvas2dFmp" height="0" width="0"></canvas>
-            <canvas id="canvasIsolines" height="0" width="0"></canvas> -->
-
         </div>
         <div id="polar">
 
@@ -338,13 +331,13 @@
         const auto = document.getElementById('RangeAvto').checked;
 
         if (auto) {
-            if (checkInputOneVar(funcInput, eval(a), eval(b))) {
+            if (checkInputOneVar(funcInput, a, b)) {
                 canvas.width = 650;
                 canvas.height = 650;
                 buildAll(funcInput, eval(a), eval(b));
             }
         } else {
-            if (checkInputOneVar(funcInput, eval(a), eval(b), false, eval(c), eval(d))) {
+            if (checkInputOneVar(funcInput, a, b, false, c, d)) {
                 canvas.width = 650;
                 canvas.height = 650;
                 buildAll(funcInput, eval(a), eval(b), false, eval(c), eval(d));
@@ -353,9 +346,6 @@
     }
 
     function drawFmpGraph() {
-       // const canvas3d = document.getElementById('canvas2dFmp');
-
-        //const canvasIsolines = document.getElementById('canvasIsolines');
 
         const funcInput = document.getElementById('twoVarIn').value;
 
@@ -367,17 +357,14 @@
         const z0 = document.getElementById('z0Bound').value;
         const z1 = document.getElementById('z1Bound').value;
 
-        if (checkInputTwoVar(funcInput, eval(a), eval(b), eval(c), eval(d))) {
-
-            if (!auto && eval(z1) <= eval(z0)) {
-                alert('Неверно заданы интервалы');
-                return;
-            }
+        if (checkInputTwoVar(funcInput, a, b, c, d, auto, z0, z1)) {
 
             if (!document.getElementById('canvas2dFmp')) {
 
                 const fmp = document.getElementById('fmp');
-                const par = document.createElement('p');
+                const par = document.createElement('div');
+
+                par.style.paddingLeft = '240px';
 
                 const rotateLeftButton = document.createElement('button');
                 const rotateRightButton = document.createElement('button');
@@ -385,8 +372,8 @@
                 rotateLeftButton.id = 'rotateLeft';
                 rotateRightButton.id = 'rotateRight';
 
-                rotateLeftButton.innerHTML = '<img src="images/arrow_left.jpg" alt="arrow left">';
-                rotateRightButton.innerHTML = '<img src="images/arrow_right.jpg" alt="arrow left">';
+                rotateLeftButton.innerHTML = '<img src="images/arrow_left.png" alt="arrow left">';
+                rotateRightButton.innerHTML = '<img src="images/arrow_right.png" alt="arrow left">';
 
                 const canvas3d = document.createElement('canvas');
                 const canvasIsolines = document.createElement('canvas');
@@ -396,6 +383,8 @@
 
                 par.appendChild(rotateLeftButton);
                 par.appendChild(rotateRightButton);
+
+                rotateRightButton.style.marginLeft = '20px';
 
                 fmp.appendChild(par);
                 fmp.appendChild(canvas3d);
@@ -444,7 +433,7 @@
         const t1 = document.getElementById('polarUpperBound').value;
         const funcInput = document.getElementById('polarIn').value;
 
-        if (checkInputPolar(funcInput, eval(t0), eval(t1))) {
+        if (checkInputPolar(funcInput, t0, t1)) {
             canvas.width = 650;
             canvas.height = 650;
             startPolar(funcInput, eval(t0), eval(t1));
@@ -461,7 +450,7 @@
         const c = document.getElementById('cBoundImpl').value;
         const d = document.getElementById('dBoundImpl').value;
 
-        if (checkInputImplicit(funcInput, eval(a), eval(b), eval(c), eval(d))) {
+        if (checkInputImplicit(funcInput, a, b, c, d)) {
             canvas.width = 650;
             canvas.height = 650;
             startImpl(funcInput, eval(a), eval(b), eval(c), eval(d));
@@ -476,7 +465,7 @@
         const funcInputX = document.getElementById('parametricInX').value;
         const funcInputY = document.getElementById('parametricInY').value;
 
-        if (checkInputParametric(funcInputX, funcInputY, eval(t0), eval(t1))) {
+        if (checkInputParametric(funcInputX, funcInputY, t0, t1)) {
             canvas.width = 650;
             canvas.height = 650;
             startParametric(funcInputX, funcInputY, eval(t0), eval(t1));

@@ -1,13 +1,39 @@
 'use strict';
 
 function funcFromString(f) {
-    f = f.replace(/\^/g, '**');
+    f = f.replace(/\^/g, '**')
+        .replace(/(\)|\d|x|y)(\w)/g, '$1*$2');
     return (x, y) => eval(f);
 }
 
-function checkInputTwoVar(funcIn, a1, a2, a3, a4, autoZ = true, z0, z1) {
+function checkInputTwoVar(funcIn, a1Str, a2Str, a3Str, a4Str, autoZ = true, z0, z1) {
+    if (funcIn.length === 0) {
+        alert('Введите функцию');
+        return null;
+    }
     const f = funcFromString(funcIn);
-    if (a2 <= a1 || a4 <= a3 || (!autoZ && z1 <= z0)) {
+    try {
+        eval(a1Str);
+        eval(a2Str);
+        eval(a3Str);
+        eval(a4Str);
+        if (!autoZ) {
+            eval(z0);
+            eval(z1);
+        }
+    } catch (e) {
+        alert('Неверно заданы интервалы');
+        return null;
+    }
+
+    const a1 = eval(a1Str);
+    const a2 = eval(a2Str);
+    const a3 = eval(a3Str);
+    const a4 = eval(a4Str);
+
+    if (!isFinite(a2) || !isFinite(a1) || a2 <= a1 ||
+        !isFinite(a3) || !isFinite(a4) || a4 <= a3 ||
+        (!autoZ && (!isFinite(eval(z1)) || !isFinite(eval(z0)) || eval(z1) <= eval(z0)))) {
         alert('Неверно заданы интервалы');
         return null;
     }
