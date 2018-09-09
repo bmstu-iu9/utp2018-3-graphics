@@ -3,40 +3,40 @@
     padding: 20px 0;
     color: #00539F;
     text-align: left;
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     font-size: larger;
 }
 body {
     width: 1000px;
     margin: 0 auto;
-    background-color: #98d8fe;
+    background-color: #adcafe;
     padding: 0 20px 20px 20px;
     border: 5px #fff;
 }
 h2, h3 {
     margin: 0;
-    color: #9f3b96;
-    font-family: 'Pacifico', cursive;
+    color: #131a9f;
+    font-family: "Times New Roman";
 }
 a {text-decoration: none;}
 a:link{
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     font-size: medium;
     color: #2408fc;
 }
 a:visited{
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     font-size: medium;
     color: #2408fc;
 }
 a:hover{
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     font-size: medium;
     color: #ff86fa;
     text-decoration: underline;
 }
 a:active{
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     font-size: medium;
     color: #ff86fa;
 }
@@ -44,7 +44,7 @@ a:active{
     margin: 0;
     color: #040404;
     background-color: #fcfbfd;
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     border: 2px solid #040404;
     padding: 10px 20px 10px 20px;
     text-align: left;
@@ -63,9 +63,9 @@ th {
 .abscissa-fmp, .ordinate-fmp, .applicate-fmp,
 .abscissa-implicity, .ordinate-implicity, .applicate-implicity,
 .abscissa-parametr, .ordinate-parametr {
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     margin: 0;
-    background-color: #9cfdee;
+    background-color: #cfe5fe;
     border: 1px solid rgba(36, 8, 252, 1);
     padding: 10px 20px 10px 20px;
     text-align: left;
@@ -76,9 +76,9 @@ th {
     color: #040404;
 }
 #usually, #fmp, #polar, #implicity, #parametr {
-    font-family: 'Pacifico', cursive;
+    font-family: "Times New Roman";
     margin: 0;
-    background-color: #9cfdee;
+    background-color: #cfe5fe;
     border: 1px solid rgba(36, 8, 252, 1);
     padding: 10px 20px 10px 20px;
     text-align: left;
