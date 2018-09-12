@@ -8,6 +8,8 @@ const abs = (x) => Math.abs(x);
 const ln = (x) => Math.log(x);
 const log2 = (x) => Math.log2(x);
 const log = (x, b) => ln(x)/ln(b);
+const lg = (x) => ln(x) / ln(10);
+const log10 = lg;
 const asin = (x) => Math.asin(x);
 const acos = (x) => Math.acos(x);
 const atg = (x) => Math.atan(x);
